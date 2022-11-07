@@ -33,6 +33,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.blockCloser = new System.Windows.Forms.Label();
             this.files = new System.Windows.Forms.TabControl();
+            this.export = new System.Windows.Forms.Button();
+            this.to = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -55,6 +57,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.to);
+            this.splitContainer1.Panel1.Controls.Add(this.export);
             this.splitContainer1.Panel1.Controls.Add(this.language);
             this.splitContainer1.Panel1MinSize = 45;
             // 
@@ -113,6 +117,9 @@
             // 
             // files
             // 
+            this.files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.files.Location = new System.Drawing.Point(0, 0);
             this.files.Margin = new System.Windows.Forms.Padding(0);
             this.files.Name = "files";
@@ -120,6 +127,25 @@
             this.files.Size = new System.Drawing.Size(627, 401);
             this.files.TabIndex = 1;
             this.files.Visible = false;
+            // 
+            // export
+            // 
+            this.export.Enabled = false;
+            this.export.Location = new System.Drawing.Point(564, 10);
+            this.export.Name = "export";
+            this.export.Size = new System.Drawing.Size(75, 23);
+            this.export.TabIndex = 1;
+            this.export.Text = "Export";
+            this.export.UseVisualStyleBackColor = true;
+            // 
+            // to
+            // 
+            this.to.AutoSize = true;
+            this.to.Location = new System.Drawing.Point(645, 15);
+            this.to.Name = "to";
+            this.to.Size = new System.Drawing.Size(16, 13);
+            this.to.TabIndex = 2;
+            this.to.Text = "to";
             // 
             // Main
             // 
@@ -131,6 +157,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -149,6 +176,8 @@
         private System.Windows.Forms.Label blockCloser;
         private System.Windows.Forms.ComboBox language;
         private System.Windows.Forms.TabControl files;
+        private System.Windows.Forms.Label to;
+        private System.Windows.Forms.Button export;
     }
 }
 

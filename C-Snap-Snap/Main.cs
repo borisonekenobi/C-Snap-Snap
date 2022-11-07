@@ -30,7 +30,7 @@ namespace C_Snap_Snap
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            splitContainer2.Panel2.BackColor = primary;
+            splitContainer2.Panel2.BackColor = secondary;
             splitContainer2.Panel1.BackColor = secondary;
             splitContainer1.Panel1.BackColor = secondary;
             blockCloser.BackColor = secondary;
@@ -96,12 +96,14 @@ namespace C_Snap_Snap
             if (language.SelectedIndex == 0)
             {
                 files.Visible = false;
+                export.Enabled = false;
                 prevIndex = 0;
             }
             else
             {
                 files.Visible = true;
                 AddFile(sender, e);
+                export.Enabled = true;
                 prevIndex = language.SelectedIndex;
             }
         }
@@ -131,10 +133,7 @@ namespace C_Snap_Snap
                 Name = sfd.FileName,
                 Text = file.Name,
                 BackColor = primary,
-                ForeColor = primary,
-                Font = new Font("Verdana", 12),
-                Width = 100,
-                Height = 100
+                ForeColor = primary
             };
             files.TabPages.Add(newFile);
             File.WriteAllText(sfd.FileName, "your data here...");
