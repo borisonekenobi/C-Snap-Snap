@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace C_Snap_Snap
 {
@@ -139,8 +140,9 @@ namespace C_Snap_Snap
             PictureBox canvas = new PictureBox
             {
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
-                Size = newFile.Size
+                Size = newFile.Size,
             };
+            canvas.Paint += new PaintEventHandler(pictureBox_Paint);
             newFile.Controls.Add(canvas);
             files.TabPages.Add(newFile);
             files.SelectedIndex = files.TabCount - 1;
@@ -155,9 +157,29 @@ namespace C_Snap_Snap
                 case "C": return "C (*.c;*.i)|*.c;*.i|";
                 case "C#": return "C# (*.cs;*.csx;*.cake)|*.cs;*.csx;*.cake|";
                 case "C++": return "C++ (*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii)|*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii|";
-                //TODO: add more languages
+                    //TODO: add more languages
             }
             return language;
+        }
+
+        private void pictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            DrawRectangle(e, 10, 10, 100, 100, Color.Blue);
+        }
+
+        private void DrawRectangle(PaintEventArgs e, int posX, int posY, int width, int height, Color color)
+        {
+            Rectangle rect = new Rectangle(posX, posY, width, height);
+            //rect.MouseLeftButtonDown += rectangle_MouseLeftButtonDown;
+            using (Pen pen = new Pen(color, 2))
+            {
+                e.Graphics.DrawRectangle(pen, rect);
+            }
+        }
+
+        private void rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 }
