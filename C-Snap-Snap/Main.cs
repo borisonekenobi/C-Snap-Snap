@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,17 +124,20 @@ namespace C_Snap_Snap
                 return;
             }
 
-            TabPage tabPage1 = new TabPage
+            var file = new FileInfo(sfd.FileName);
+
+            TabPage newFile = new TabPage
             {
                 Name = sfd.FileName,
-                Text = sfd.FileName,
+                Text = file.Name,
                 BackColor = primary,
                 ForeColor = primary,
                 Font = new Font("Verdana", 12),
                 Width = 100,
                 Height = 100
             };
-            files.TabPages.Add(tabPage1);
+            files.TabPages.Add(newFile);
+            File.WriteAllText(sfd.FileName, "your data here...");
         }
 
         private string FileExt(string language)
@@ -143,10 +147,6 @@ namespace C_Snap_Snap
                 case "C": return "C (*.c;*.i)|*.c;*.i|";
                 case "C#": return "C# (*.cs;*.csx;*.cake)|*.cs;*.csx;*.cake|";
                 case "C++": return "C++ (*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii)|*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii|";
-                case "Java": return "java";
-                case "JavaScript": return "js";
-                case "Python": return "py";
-                case "TypeScript": return "ts";
                 //TODO: add more languages
             }
             return language;
