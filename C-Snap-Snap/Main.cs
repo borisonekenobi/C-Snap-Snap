@@ -17,10 +17,10 @@ namespace C_Snap_Snap
         private int prevIndex = 0;
         private bool resettingLanguage = false;
         private string path;
-        private Color primary = Color.FromArgb(141, 35, 15);
-        private Color secondary = Color.FromArgb(30, 67, 76);
-        private Color accent = Color.FromArgb(155, 79, 15);
-        private Color accentSecondary = Color.FromArgb(201, 158, 16);
+        private readonly Color primary = Color.FromArgb(141, 35, 15);
+        private readonly Color secondary = Color.FromArgb(30, 67, 76);
+        private readonly Color accent = Color.FromArgb(155, 79, 15);
+        private readonly Color accentSecondary = Color.FromArgb(201, 158, 16);
 
         public Main()
         {
@@ -31,16 +31,17 @@ namespace C_Snap_Snap
         {
 
             splitContainer2.Panel2.BackColor = secondary;
-            splitContainer2.Panel1.BackColor = secondary;
+            splitContainer2.Panel1.BackColor = accent;
             splitContainer1.Panel1.BackColor = secondary;
             blockCloser.BackColor = secondary;
             language.SelectedIndex = 0;
 
-            for (int i = 0; i < files.TabCount; i++)
+            for (int i = 0; i < blocks.TabCount; i++)
             {
-                files.SelectedIndex = i;
-                files.SelectedTab.BackColor = primary;
+                blocks.SelectedIndex = i;
+                blocks.SelectedTab.BackColor = secondary;
             }
+            blocks.SelectedIndex = 0;
 
             initDone = true;
         }
