@@ -78,11 +78,12 @@
             // 
             // to
             // 
-            this.to.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.to.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.to.AutoSize = true;
             this.to.Location = new System.Drawing.Point(645, 15);
+            this.to.MaximumSize = new System.Drawing.Size(16, 13);
+            this.to.MinimumSize = new System.Drawing.Size(16, 13);
             this.to.Name = "to";
             this.to.Size = new System.Drawing.Size(16, 13);
             this.to.TabIndex = 2;
@@ -90,11 +91,12 @@
             // 
             // export
             // 
-            this.export.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.export.Enabled = false;
             this.export.Location = new System.Drawing.Point(564, 10);
+            this.export.MaximumSize = new System.Drawing.Size(75, 23);
+            this.export.MinimumSize = new System.Drawing.Size(75, 23);
             this.export.Name = "export";
             this.export.Size = new System.Drawing.Size(75, 23);
             this.export.TabIndex = 1;
@@ -103,7 +105,8 @@
             // 
             // language
             // 
-            this.language.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.language.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.language.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.language.DropDownWidth = 120;
             this.language.FormattingEnabled = true;
