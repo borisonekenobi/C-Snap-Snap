@@ -137,7 +137,9 @@ namespace C_Snap_Snap
                 ForeColor = primary
             };
             files.TabPages.Add(newFile);
-            File.WriteAllText(sfd.FileName, "your data here...");
+            files.SelectedIndex = files.TabCount - 1;
+
+            File.WriteAllText(sfd.FileName, "TESTING C++ FILE");
         }
 
         private string FileExt(string language)
