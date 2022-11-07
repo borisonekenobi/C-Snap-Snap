@@ -78,6 +78,9 @@
             // 
             // to
             // 
+            this.to.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.to.AutoSize = true;
             this.to.Location = new System.Drawing.Point(645, 15);
             this.to.Name = "to";
@@ -87,6 +90,9 @@
             // 
             // export
             // 
+            this.export.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.export.Enabled = false;
             this.export.Location = new System.Drawing.Point(564, 10);
             this.export.Name = "export";

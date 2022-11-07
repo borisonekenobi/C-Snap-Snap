@@ -136,6 +136,12 @@ namespace C_Snap_Snap
                 BackColor = primary,
                 ForeColor = primary
             };
+            PictureBox canvas = new PictureBox
+            {
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
+                Size = newFile.Size
+            };
+            newFile.Controls.Add(canvas);
             files.TabPages.Add(newFile);
             files.SelectedIndex = files.TabCount - 1;
 
