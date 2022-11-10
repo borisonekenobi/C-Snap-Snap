@@ -30,16 +30,15 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.to = new System.Windows.Forms.Label();
-            this.export = new System.Windows.Forms.Button();
-            this.language = new System.Windows.Forms.ComboBox();
+            this.Export = new System.Windows.Forms.Button();
+            this.Language = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.blockCloser = new System.Windows.Forms.Label();
-            this.files = new System.Windows.Forms.TabControl();
-            this.blocks = new System.Windows.Forms.TabControl();
-            this.variables = new System.Windows.Forms.TabPage();
-            this.ifStatements = new System.Windows.Forms.TabPage();
-            this.loops = new System.Windows.Forms.TabPage();
-            this.math = new System.Windows.Forms.TabPage();
+            this.Blocks = new System.Windows.Forms.TabControl();
+            this.Variables = new System.Windows.Forms.TabPage();
+            this.IfStatements = new System.Windows.Forms.TabPage();
+            this.Loops = new System.Windows.Forms.TabPage();
+            this.Math = new System.Windows.Forms.TabPage();
+            this.BlockCloser = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -48,7 +47,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.blocks.SuspendLayout();
+            this.Blocks.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -65,8 +64,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.to);
-            this.splitContainer1.Panel1.Controls.Add(this.export);
-            this.splitContainer1.Panel1.Controls.Add(this.language);
+            this.splitContainer1.Panel1.Controls.Add(this.Export);
+            this.splitContainer1.Panel1.Controls.Add(this.Language);
             this.splitContainer1.Panel1MinSize = 45;
             // 
             // splitContainer1.Panel2
@@ -91,33 +90,33 @@
             // 
             // export
             // 
-            this.export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.export.Enabled = false;
-            this.export.Location = new System.Drawing.Point(564, 10);
-            this.export.MaximumSize = new System.Drawing.Size(75, 23);
-            this.export.MinimumSize = new System.Drawing.Size(75, 23);
-            this.export.Name = "export";
-            this.export.Size = new System.Drawing.Size(75, 23);
-            this.export.TabIndex = 1;
-            this.export.Text = "Export";
-            this.export.UseVisualStyleBackColor = true;
+            this.Export.Enabled = false;
+            this.Export.Location = new System.Drawing.Point(564, 10);
+            this.Export.MaximumSize = new System.Drawing.Size(75, 23);
+            this.Export.MinimumSize = new System.Drawing.Size(75, 23);
+            this.Export.Name = "export";
+            this.Export.Size = new System.Drawing.Size(75, 23);
+            this.Export.TabIndex = 1;
+            this.Export.Text = "Export";
+            this.Export.UseVisualStyleBackColor = true;
             // 
             // language
             // 
-            this.language.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Language.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.language.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.language.DropDownWidth = 120;
-            this.language.FormattingEnabled = true;
-            this.language.Items.AddRange(new object[] {
+            this.Language.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Language.DropDownWidth = 120;
+            this.Language.FormattingEnabled = true;
+            this.Language.Items.AddRange(new object[] {
             "Choose Language",
             "C++"});
-            this.language.Location = new System.Drawing.Point(667, 12);
-            this.language.Name = "language";
-            this.language.Size = new System.Drawing.Size(120, 21);
-            this.language.TabIndex = 0;
-            this.language.SelectedIndexChanged += new System.EventHandler(this.language_SelectedIndexChanged);
+            this.Language.Location = new System.Drawing.Point(667, 12);
+            this.Language.Name = "language";
+            this.Language.Size = new System.Drawing.Size(120, 21);
+            this.Language.TabIndex = 0;
+            this.Language.SelectedIndexChanged += new System.EventHandler(this.Language_SelectedIndexChanged);
             // 
             // splitContainer2
             // 
@@ -130,95 +129,81 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.blocks);
+            this.splitContainer2.Panel1.Controls.Add(this.Blocks);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainer2.Panel2.Controls.Add(this.blockCloser);
-            this.splitContainer2.Panel2.Controls.Add(this.files);
+            this.splitContainer2.Panel2.Controls.Add(this.BlockCloser);
             this.splitContainer2.Panel2.DoubleClick += new System.EventHandler(this.AddFile);
             this.splitContainer2.Size = new System.Drawing.Size(800, 401);
             this.splitContainer2.SplitterDistance = 169;
             this.splitContainer2.TabIndex = 0;
-            this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
+            this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer2_SplitterMoved);
             // 
-            // blockCloser
+            // Blocks
             // 
-            this.blockCloser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.blockCloser.AutoSize = true;
-            this.blockCloser.Location = new System.Drawing.Point(0, 388);
-            this.blockCloser.Name = "blockCloser";
-            this.blockCloser.Size = new System.Drawing.Size(13, 13);
-            this.blockCloser.TabIndex = 0;
-            this.blockCloser.Text = "<";
-            this.blockCloser.Click += new System.EventHandler(this.blockCloser_Click);
-            // 
-            // files
-            // 
-            this.files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Blocks.Alignment = System.Windows.Forms.TabAlignment.Left;
+            this.Blocks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.files.Location = new System.Drawing.Point(0, 0);
-            this.files.Margin = new System.Windows.Forms.Padding(0);
-            this.files.Name = "files";
-            this.files.SelectedIndex = 0;
-            this.files.Size = new System.Drawing.Size(627, 401);
-            this.files.TabIndex = 1;
-            this.files.Visible = false;
-            // 
-            // blocks
-            // 
-            this.blocks.Alignment = System.Windows.Forms.TabAlignment.Left;
-            this.blocks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.blocks.Controls.Add(this.variables);
-            this.blocks.Controls.Add(this.ifStatements);
-            this.blocks.Controls.Add(this.loops);
-            this.blocks.Controls.Add(this.math);
-            this.blocks.Location = new System.Drawing.Point(0, 0);
-            this.blocks.Multiline = true;
-            this.blocks.Name = "blocks";
-            this.blocks.SelectedIndex = 0;
-            this.blocks.Size = new System.Drawing.Size(170, 401);
-            this.blocks.TabIndex = 0;
+            this.Blocks.Controls.Add(this.Variables);
+            this.Blocks.Controls.Add(this.IfStatements);
+            this.Blocks.Controls.Add(this.Loops);
+            this.Blocks.Controls.Add(this.Math);
+            this.Blocks.Location = new System.Drawing.Point(0, 0);
+            this.Blocks.Multiline = true;
+            this.Blocks.Name = "Blocks";
+            this.Blocks.SelectedIndex = 0;
+            this.Blocks.Size = new System.Drawing.Size(170, 401);
+            this.Blocks.TabIndex = 0;
             // 
             // variables
             // 
-            this.variables.Location = new System.Drawing.Point(23, 4);
-            this.variables.Name = "variables";
-            this.variables.Size = new System.Drawing.Size(143, 393);
-            this.variables.TabIndex = 0;
-            this.variables.Text = "Variables";
-            this.variables.UseVisualStyleBackColor = true;
+            this.Variables.Location = new System.Drawing.Point(23, 4);
+            this.Variables.Name = "variables";
+            this.Variables.Size = new System.Drawing.Size(143, 393);
+            this.Variables.TabIndex = 0;
+            this.Variables.Text = "Variables";
+            this.Variables.UseVisualStyleBackColor = true;
             // 
             // ifStatements
             // 
-            this.ifStatements.Location = new System.Drawing.Point(23, 4);
-            this.ifStatements.Name = "ifStatements";
-            this.ifStatements.Size = new System.Drawing.Size(143, 393);
-            this.ifStatements.TabIndex = 1;
-            this.ifStatements.Text = "If Statements";
-            this.ifStatements.UseVisualStyleBackColor = true;
+            this.IfStatements.Location = new System.Drawing.Point(23, 4);
+            this.IfStatements.Name = "ifStatements";
+            this.IfStatements.Size = new System.Drawing.Size(143, 393);
+            this.IfStatements.TabIndex = 1;
+            this.IfStatements.Text = "If Statements";
+            this.IfStatements.UseVisualStyleBackColor = true;
             // 
             // loops
             // 
-            this.loops.Location = new System.Drawing.Point(23, 4);
-            this.loops.Name = "loops";
-            this.loops.Size = new System.Drawing.Size(143, 393);
-            this.loops.TabIndex = 2;
-            this.loops.Text = "Loops";
-            this.loops.UseVisualStyleBackColor = true;
+            this.Loops.Location = new System.Drawing.Point(23, 4);
+            this.Loops.Name = "loops";
+            this.Loops.Size = new System.Drawing.Size(143, 393);
+            this.Loops.TabIndex = 2;
+            this.Loops.Text = "Loops";
+            this.Loops.UseVisualStyleBackColor = true;
             // 
             // math
             // 
-            this.math.Location = new System.Drawing.Point(23, 4);
-            this.math.Name = "math";
-            this.math.Size = new System.Drawing.Size(143, 393);
-            this.math.TabIndex = 3;
-            this.math.Text = "Math";
-            this.math.UseVisualStyleBackColor = true;
+            this.Math.Location = new System.Drawing.Point(23, 4);
+            this.Math.Name = "math";
+            this.Math.Size = new System.Drawing.Size(143, 393);
+            this.Math.TabIndex = 3;
+            this.Math.Text = "Math";
+            this.Math.UseVisualStyleBackColor = true;
+            // 
+            // blockCloser
+            // 
+            this.BlockCloser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BlockCloser.AutoSize = true;
+            this.BlockCloser.Location = new System.Drawing.Point(0, 388);
+            this.BlockCloser.Name = "blockCloser";
+            this.BlockCloser.Size = new System.Drawing.Size(13, 13);
+            this.BlockCloser.TabIndex = 0;
+            this.BlockCloser.Text = "<";
+            this.BlockCloser.Click += new System.EventHandler(this.BlockCloser_Click);
             // 
             // Main
             // 
@@ -239,7 +224,7 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.blocks.ResumeLayout(false);
+            this.Blocks.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -248,16 +233,15 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Label blockCloser;
-        private System.Windows.Forms.ComboBox language;
-        private System.Windows.Forms.TabControl files;
+        private System.Windows.Forms.Label BlockCloser;
+        private System.Windows.Forms.ComboBox Language;
         private System.Windows.Forms.Label to;
-        private System.Windows.Forms.Button export;
-        private System.Windows.Forms.TabControl blocks;
-        private System.Windows.Forms.TabPage variables;
-        private System.Windows.Forms.TabPage ifStatements;
-        private System.Windows.Forms.TabPage loops;
-        private System.Windows.Forms.TabPage math;
+        private System.Windows.Forms.Button Export;
+        private System.Windows.Forms.TabControl Blocks;
+        private System.Windows.Forms.TabPage Variables;
+        private System.Windows.Forms.TabPage IfStatements;
+        private System.Windows.Forms.TabPage Loops;
+        private System.Windows.Forms.TabPage Math;
     }
 }
 

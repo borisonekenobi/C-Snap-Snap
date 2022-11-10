@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace C_Snap_Snap
 {
     public partial class Main : Form
     {
-        private bool initDone = false;
-        private int prevIndex = 0;
-        private bool resettingLanguage = false;
-        private string path;
         private readonly Color primary = Color.FromArgb(141, 35, 15);
         private readonly Color secondary = Color.FromArgb(30, 67, 76);
         private readonly Color accent = Color.FromArgb(155, 79, 15);
         private readonly Color accentSecondary = Color.FromArgb(201, 158, 16);
+        public static TabControl Files { get; set; } = new TabControl();
+
+        private bool initDone = false;
+        private int prevIndex = 0;
+        private bool resettingLanguage = false;
+        private List<string> filePaths = new List<string>();
+        private readonly List<Block> blocks = new List<Block>();
 
         public Main()
         {
@@ -30,52 +28,55 @@ namespace C_Snap_Snap
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
+            Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            splitContainer2.Panel2.Controls.Add(Files);
 
             splitContainer2.Panel2.BackColor = secondary;
             splitContainer2.Panel1.BackColor = accent;
             splitContainer1.Panel1.BackColor = secondary;
-            blockCloser.BackColor = secondary;
-            language.SelectedIndex = 0;
+            BlockCloser.BackColor = secondary;
+            Language.SelectedIndex = 0;
 
-            for (int i = 0; i < blocks.TabCount; i++)
+            for (int i = 0; i < Blocks.TabCount; i++)
             {
-                blocks.SelectedIndex = i;
-                blocks.SelectedTab.BackColor = secondary;
+                Blocks.SelectedIndex = i;
+                Blocks.SelectedTab.BackColor = secondary;
             }
-            blocks.SelectedIndex = 0;
+            Blocks.SelectedIndex = 0;
 
             initDone = true;
         }
 
-        private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
+        private void SplitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
         {
             if (splitContainer2.SplitterDistance <= 50)
             {
                 splitContainer2.Panel1Collapsed = true;
-                blockCloser.Text = ">";
+                BlockCloser.Text = ">";
             }
             else
             {
                 splitContainer2.Panel1Collapsed = false;
-                blockCloser.Text = "<";
+                BlockCloser.Text = "<";
             }
         }
 
-        private void blockCloser_Click(object sender, EventArgs e)
+        private void BlockCloser_Click(object sender, EventArgs e)
         {
             if (splitContainer2.Panel1Collapsed)
             {
                 splitContainer2.Panel1Collapsed = false;
-                blockCloser.Text = "<";
+                BlockCloser.Text = "<";
             }
             else
             {
                 splitContainer2.Panel1Collapsed = true;
-                blockCloser.Text = ">";
+                BlockCloser.Text = ">";
             }
         }
 
-        private void language_SelectedIndexChanged(object sender, EventArgs e)
+        private void Language_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!initDone) return;
             if (resettingLanguage)
@@ -84,51 +85,50 @@ namespace C_Snap_Snap
                 return;
             }
 
-            if (files.Visible)
+            if (Files.SelectedIndex != -1)
             {
-                /*var saveChanges = MessageBox.Show("Would you like to save any changes?", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                var saveChanges = MessageBox.Show("Any unsaved work will be deleted! Would you like to save changes?", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (saveChanges == DialogResult.Cancel)
                 {
                     resettingLanguage = true;
-                    language.SelectedIndex = prevIndex;
+                    Language.SelectedIndex = prevIndex;
                     return;
-                }*/
+                }
             }
 
-            if (language.SelectedIndex == 0)
+            if (Language.SelectedIndex == 0)
             {
-                files.Visible = false;
-                export.Enabled = false;
+                Files.Visible = false;
+                Export.Enabled = false;
                 prevIndex = 0;
             }
             else
             {
-                files.Visible = true;
+                Files.Visible = true;
                 AddFile(sender, e);
-                export.Enabled = true;
-                prevIndex = language.SelectedIndex;
+                Export.Enabled = true;
+                prevIndex = Language.SelectedIndex;
             }
         }
 
         private void AddFile(object sender, EventArgs e)
         {
-            if (!files.Visible) return;
+            if (!Files.Visible) return;
 
             SaveFileDialog sfd = new SaveFileDialog
             {
                 RestoreDirectory = true,
-                //DefaultExt = FileExt(language.SelectedText),
-                Filter = FileExt(language.SelectedItem.ToString()) + "All files (*.*)|*.*"
+                Filter = "C-Snap-Snap file (*.snap)|*.snap|All files (*.*)|*.*"
             };
-            //sfd.InitialDirectory = path;
             var isFileSelected = sfd.ShowDialog();
             if (isFileSelected == DialogResult.Cancel)
             {
-                language.SelectedIndex = prevIndex;
+                Language.SelectedIndex = prevIndex;
                 return;
             }
 
             var file = new FileInfo(sfd.FileName);
+            filePaths.Add(file.FullName);
 
             TabPage newFile = new TabPage
             {
@@ -137,15 +137,11 @@ namespace C_Snap_Snap
                 BackColor = primary,
                 ForeColor = primary
             };
-            PictureBox canvas = new PictureBox
-            {
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
-                Size = newFile.Size,
-            };
-            canvas.Paint += new PaintEventHandler(pictureBox_Paint);
-            newFile.Controls.Add(canvas);
-            files.TabPages.Add(newFile);
-            files.SelectedIndex = files.TabCount - 1;
+            newFile.MouseClick += new MouseEventHandler(Files_MouseClick);
+            newFile.MouseDoubleClick += new MouseEventHandler(Files_MouseClick);
+            newFile.Paint += new PaintEventHandler(NewFiles_Paint);
+            Files.TabPages.Add(newFile);
+            Files.SelectedIndex = Files.TabCount - 1;
 
             File.WriteAllText(sfd.FileName, "TESTING C++ FILE");
         }
@@ -162,24 +158,19 @@ namespace C_Snap_Snap
             return language;
         }
 
-        private void pictureBox_Paint(object sender, PaintEventArgs e)
+        private void NewFiles_Paint(object sender, PaintEventArgs e)
         {
-            DrawRectangle(e, 10, 10, 100, 100, Color.Blue);
-        }
-
-        private void DrawRectangle(PaintEventArgs e, int posX, int posY, int width, int height, Color color)
-        {
-            Rectangle rect = new Rectangle(posX, posY, width, height);
-            //rect.MouseLeftButtonDown += rectangle_MouseLeftButtonDown;
-            using (Pen pen = new Pen(color, 2))
+            foreach (var block in blocks)
             {
-                e.Graphics.DrawRectangle(pen, rect);
+                block.Draw(e);
             }
         }
 
-        private void rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Files_MouseClick(object sender, MouseEventArgs e)
         {
-            
+            Point pos = MousePosition;
+            blocks.Add(new Variable(filePaths[Files.SelectedIndex], null, null, new Position(pos), "int", "x", "5"));
+            Files.SelectedTab.Invalidate();
         }
     }
 }
