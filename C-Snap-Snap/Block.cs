@@ -13,6 +13,8 @@ namespace C_Snap_Snap
         protected Block next;
         protected Block prev;
         protected Position pos;
+        protected bool isDefault;
+        protected bool Visible;
 
         public Block(string file, Block next, Block prev, Position pos)
         {

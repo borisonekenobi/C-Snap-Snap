@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace C_Snap_Snap
 {
-    internal class Variable : DefaultBlock
+    internal class Variable : Block
     {
         private readonly Size size = new Size(100, 30);
         private readonly Color color = Color.Orange;
@@ -16,7 +16,6 @@ namespace C_Snap_Snap
         private string Type { get; set; }
         private string Name { get; set; }
         private string Value { get; set; }
-        private bool IsDefault { get; set; }
 
         public Variable(string file, Block next, Block prev, Position pos, string type, string name, string value) : this(file, next, prev, pos, type, name, value, false)
         {
@@ -30,7 +29,7 @@ namespace C_Snap_Snap
             Type = type;
             Name = name;
             Value = value;
-            IsDefault = isDefault;
+            this.isDefault = isDefault;
         }
 
         override
