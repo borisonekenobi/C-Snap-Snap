@@ -30,6 +30,7 @@ namespace C_Snap_Snap
         {
             Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
             Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            Files.Visible = false;
             splitContainer2.Panel2.Controls.Add(Files);
 
             splitContainer2.Panel2.BackColor = secondary;
