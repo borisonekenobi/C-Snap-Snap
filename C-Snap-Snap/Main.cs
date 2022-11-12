@@ -10,7 +10,7 @@ namespace C_Snap_Snap
 {
     public partial class Main : Form
     {
-        private readonly Point MouseConstant = new Point(176, 70);
+        private readonly Point MouseConstant = new Point(177, 70);
         private readonly Color primary = Color.FromArgb(141, 35, 15);
         private readonly Color secondary = Color.FromArgb(30, 67, 76);
         private readonly Color accent = Color.FromArgb(155, 79, 15);
@@ -189,11 +189,12 @@ namespace C_Snap_Snap
             {
                 block.Draw(e.Graphics, block == selectedBlock);
             }
-            /*using (Pen pen = new Pen(Color.Blue, 2))
+            using (Pen pen = new Pen(Color.Blue, 3))
             {
-                e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - 2, MousePos.Y - 2, 4, 4));
-                if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - 2, selectedBlock.Pos.Y - 2, 4, 4));
-            }*/
+                int size = 3;
+                e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - size, MousePos.Y - size, 2 * size, 2 * size));
+                if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - size, selectedBlock.Pos.Y - size, 2 * size, 2 * size));
+            }
         }
 
         private void Files_MouseDown(object sender, MouseEventArgs e)
