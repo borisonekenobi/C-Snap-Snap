@@ -5,7 +5,7 @@ namespace C_Snap_Snap
 {
     internal class Block
     {
-        private readonly Pen DrawPen = new Pen(Color.Orange, 2);
+        private readonly Pen DrawPen = new Pen(Color.Orange, 3);
         private readonly Pen Highlight = new Pen(Color.White, 1);
 
         protected string file;
@@ -28,15 +28,8 @@ namespace C_Snap_Snap
 
         public void Draw(Graphics g, bool isSelected)
         {
-            if (Main.Files.SelectedTab.Name != file) return;
-            foreach (Rectangle rect in Rectangles)
-            {
-                if (isSelected)
-                {
-                    g.DrawRectangle(Highlight, rect.Left - 2, rect.Top - 2, rect.Width + 2, rect.Height + 2);
-                }
-                g.DrawRectangle(DrawPen, rect);
-            }
+            g.DrawRectangles(DrawPen, Rectangles.ToArray());
+            if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
         }
 
         public bool IsHover(Point mouse)
