@@ -2,24 +2,30 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Media.Animation;
 
 namespace C_Snap_Snap
 {
     public partial class Main : Form
     {
+        private readonly Point MouseConstant = new Point(176, 70);
         private readonly Color primary = Color.FromArgb(141, 35, 15);
         private readonly Color secondary = Color.FromArgb(30, 67, 76);
         private readonly Color accent = Color.FromArgb(155, 79, 15);
         private readonly Color accentSecondary = Color.FromArgb(201, 158, 16);
         public static TabControl Files { get; set; } = new TabControl();
 
+        private Point MousePos;
         private bool initDone = false;
         private int prevIndex = 0;
         private bool resettingLanguage = false;
-        private List<string> filePaths = new List<string>();
+        private readonly List<string> filePaths = new List<string>();
         private readonly List<Block> blocks = new List<Block>();
+        private bool breakLoop = false;
+        private Block selectedBlock;
+        private Point distanceFromMouse = new Point(0, 0);
 
         public Main()
         {
@@ -30,6 +36,8 @@ namespace C_Snap_Snap
         {
             Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
             Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            //Files.SetStyle(ControlStyles.DoubleBuffered, true);
+            //Files.DoubleBuffered = true;
             Files.Visible = false;
             splitContainer2.Panel2.Controls.Add(Files);
 
@@ -47,6 +55,8 @@ namespace C_Snap_Snap
             Blocks.SelectedIndex = 0;
 
             initDone = true;
+
+            Task repaint = new Task(RepaintScreen); repaint.Start();
         }
 
         private void SplitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
@@ -138,8 +148,8 @@ namespace C_Snap_Snap
                 BackColor = primary,
                 ForeColor = primary
             };
-            newFile.MouseClick += new MouseEventHandler(Files_MouseClick);
-            newFile.MouseDoubleClick += new MouseEventHandler(Files_MouseClick);
+            newFile.MouseDown += new MouseEventHandler(Files_MouseDown);
+            newFile.MouseUp += new MouseEventHandler(Files_MouseUp);
             newFile.Paint += new PaintEventHandler(NewFiles_Paint);
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
@@ -159,19 +169,70 @@ namespace C_Snap_Snap
             return language;
         }
 
+        private void RepaintScreen()
+        {
+            while (true)
+            {
+                Invoke(new MethodInvoker(() => MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y))));
+                if (Files.TabCount <= 0) continue;
+                Files.Invoke(new MethodInvoker(() => Files.SelectedTab.Invalidate()));
+                Thread.Sleep(1000 / 15);
+            }
+        }
+
         private void NewFiles_Paint(object sender, PaintEventArgs e)
         {
             foreach (var block in blocks)
             {
-                block.Draw(e);
+                block.Draw(e.Graphics);
+            }
+            /*using (Pen pen = new Pen(Color.Blue, 2))
+            {
+                e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - 2, MousePos.Y - 2, 4, 4));
+                if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - 2, selectedBlock.Pos.Y - 2, 4, 4));
+            }*/
+        }
+
+        private void Files_MouseDown(object sender, MouseEventArgs e)
+        {
+            breakLoop = false;
+            if (e.Button == MouseButtons.Left)
+            {
+                if (blocks.Count == 0) return;
+                foreach (var block in blocks)
+                {
+                    if (block.IsHover(MousePos))
+                    {
+                        selectedBlock = block;
+                        break;
+                    }
+                }
+
+                if (selectedBlock != null) distanceFromMouse = new Point(selectedBlock.Pos.X - MousePos.X, selectedBlock.Pos.Y - MousePos.Y);
+
+                Task t = new Task(UpdatePos);
+                t.Start();
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                blocks.Add(new Variable(filePaths[Files.SelectedIndex], MousePos));
+                Files.SelectedTab.Invalidate();
             }
         }
 
-        private void Files_MouseClick(object sender, MouseEventArgs e)
+        private void Files_MouseUp(object sender, MouseEventArgs e)
         {
-            Point pos = MousePosition;
-            blocks.Add(new Variable(filePaths[Files.SelectedIndex], null, null, new Position(pos), "int", "x", "5"));
-            Files.SelectedTab.Invalidate();
+            breakLoop = true;
+        }
+
+        private void UpdatePos()
+        {
+            if (selectedBlock == null) return;
+            while (!breakLoop)
+            {
+                selectedBlock.Pos = new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y);
+            }
+            selectedBlock = null;
         }
     }
 }
