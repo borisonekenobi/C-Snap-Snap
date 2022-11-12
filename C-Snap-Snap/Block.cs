@@ -5,10 +5,14 @@ namespace C_Snap_Snap
 {
     internal class Block
     {
+        private readonly Pen DrawPen = new Pen(Color.Orange, 2);
+        private readonly Pen Highlight = new Pen(Color.White, 1);
+
         protected string file;
         protected Block next;
         protected Block prev;
         protected Color color;
+
         public Point Pos { get; set; }
         public bool IsDefault { get; set; }
         public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
@@ -22,15 +26,16 @@ namespace C_Snap_Snap
             this.Pos = pos;
         }
 
-        public void Draw(Graphics g)
+        public void Draw(Graphics g, bool isSelected)
         {
             if (Main.Files.SelectedTab.Name != file) return;
-            using (Pen pen = new Pen(color, 2))
+            foreach (Rectangle rect in Rectangles)
             {
-                foreach (Rectangle rect in Rectangles)
+                if (isSelected)
                 {
-                    g.DrawRectangle(pen, Pos.X, Pos.Y, rect.Width, rect.Height);
+                    g.DrawRectangle(Highlight, rect.Left - 2, rect.Top - 2, rect.Width + 2, rect.Height + 2);
                 }
+                g.DrawRectangle(DrawPen, rect);
             }
         }
 

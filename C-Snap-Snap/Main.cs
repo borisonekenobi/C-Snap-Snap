@@ -186,7 +186,7 @@ namespace C_Snap_Snap
         {
             foreach (var block in blocks)
             {
-                block.Draw(e.Graphics);
+                block.Draw(e.Graphics, block == selectedBlock);
             }
             /*using (Pen pen = new Pen(Color.Blue, 2))
             {
