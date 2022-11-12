@@ -15,6 +15,7 @@ namespace C_Snap_Snap
         private readonly Color secondary = Color.FromArgb(30, 67, 76);
         private readonly Color accent = Color.FromArgb(155, 79, 15);
         private readonly Color accentSecondary = Color.FromArgb(201, 158, 16);
+
         public static TabControl Files { get; set; } = new TabControl();
 
         private Point MousePos;

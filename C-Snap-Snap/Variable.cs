@@ -6,9 +6,9 @@ namespace C_Snap_Snap
     {
         private readonly Size size = new Size(100, 30);
 
-        public string type { get; set; }
-        public string name { get; set; }
-        public string value { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
 
         public Variable(string file, Point pos) : this(file, null, null, pos, null, null, null, false)
         {
@@ -23,9 +23,9 @@ namespace C_Snap_Snap
             this.next = next;
             this.prev = prev;
             this.Pos = pos;
-            this.type = type;
-            this.name = name;
-            this.value = value;
+            this.Type = type;
+            this.Name = name;
+            this.Value = value;
             this.IsDefault = isDefault;
 
             color = Color.Orange;
