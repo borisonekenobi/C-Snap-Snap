@@ -171,12 +171,14 @@ namespace C_Snap_Snap
 
         private void RepaintScreen()
         {
+            MethodInvoker updateCursorPos = new MethodInvoker(() => MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y)));
+            MethodInvoker updateScreen = new MethodInvoker(() => Files.SelectedTab.Invalidate());
             while (true)
             {
-                Invoke(new MethodInvoker(() => MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y))));
                 if (Files.TabCount <= 0) continue;
-                Files.Invoke(new MethodInvoker(() => Files.SelectedTab.Invalidate()));
-                Thread.Sleep(1000 / 15);
+                Invoke(updateCursorPos);
+                Invoke(updateScreen);
+                Thread.Sleep(1000 / 60);
             }
         }
 
@@ -204,7 +206,6 @@ namespace C_Snap_Snap
                     if (block.IsHover(MousePos))
                     {
                         selectedBlock = block;
-                        break;
                     }
                 }
 
