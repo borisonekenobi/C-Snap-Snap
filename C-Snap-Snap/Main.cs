@@ -56,8 +56,6 @@ namespace C_Snap_Snap
             Blocks.SelectedIndex = 0;
 
             initDone = true;
-
-            Task repaint = new Task(RepaintScreen); repaint.Start();
         }
 
         private void SplitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
@@ -152,13 +150,15 @@ namespace C_Snap_Snap
             newFile.MouseDown += new MouseEventHandler(Files_MouseDown);
             newFile.MouseUp += new MouseEventHandler(Files_MouseUp);
             newFile.Paint += new PaintEventHandler(NewFiles_Paint);
+            newFile.MouseMove += new MouseEventHandler(NewFile_MouseMove);
+            //newFile.DoubleBuffered = true;
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
 
-            File.WriteAllText(sfd.FileName, "TESTING C++ FILE");
+            File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
         }
 
-        private string FileExt(string language)
+        private string FileExt(string language) // will be used for the export button
         {
             switch (language)
             {
@@ -170,31 +170,26 @@ namespace C_Snap_Snap
             return language;
         }
 
-        private void RepaintScreen()
-        {
-            MethodInvoker updateCursorPos = new MethodInvoker(() => MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y)));
-            MethodInvoker updateScreen = new MethodInvoker(() => Files.SelectedTab.Invalidate());
-            while (true)
-            {
-                if (Files.TabCount <= 0) continue;
-                Invoke(updateCursorPos);
-                Invoke(updateScreen);
-                Thread.Sleep(1000 / 60);
-            }
-        }
-
         private void NewFiles_Paint(object sender, PaintEventArgs e)
         {
             foreach (var block in blocks)
             {
-                block.Draw(e.Graphics, block == selectedBlock);
+                if (block.File == Files.SelectedTab.Name) block.Draw(e.Graphics, block == selectedBlock);
             }
-            using (Pen pen = new Pen(Color.Blue, 3))
+            /*using (Pen pen = new Pen(Color.Blue, 3))
             {
                 int size = 3;
                 e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - size, MousePos.Y - size, 2 * size, 2 * size));
                 if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - size, selectedBlock.Pos.Y - size, 2 * size, 2 * size));
-            }
+            }*/
+        }
+
+        private void NewFile_MouseMove(object sender, MouseEventArgs e)
+        {
+            MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y));
+            if (selectedBlock == null) return;
+            selectedBlock.Pos = new Point(e.X + distanceFromMouse.X, e.Y + distanceFromMouse.Y);
+            Files.SelectedTab.Invalidate();
         }
 
         private void Files_MouseDown(object sender, MouseEventArgs e)
@@ -211,10 +206,12 @@ namespace C_Snap_Snap
                     }
                 }
 
-                if (selectedBlock != null) distanceFromMouse = new Point(selectedBlock.Pos.X - MousePos.X, selectedBlock.Pos.Y - MousePos.Y);
-
-                Task t = new Task(UpdatePos);
-                t.Start();
+                if (selectedBlock != null)
+                {
+                    distanceFromMouse = new Point(selectedBlock.Pos.X - MousePos.X, selectedBlock.Pos.Y - MousePos.Y);
+                    Task t = new Task(UpdatePos);
+                    t.Start();
+                }
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -230,12 +227,21 @@ namespace C_Snap_Snap
 
         private void UpdatePos()
         {
-            if (selectedBlock == null) return;
             while (!breakLoop)
             {
-                selectedBlock.Pos = new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y);
+                selectedBlock.UpdatePos(new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y));
             }
             selectedBlock = null;
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var saveChanges = MessageBox.Show("Any unsaved work will be deleted! Would you like to save changes?", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            if (saveChanges == DialogResult.Cancel) e.Cancel = true;
+            else if (saveChanges == DialogResult.Yes)
+            {
+                //save changes to file
+            }
         }
     }
 }
