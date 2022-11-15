@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Windows.Forms.VisualStyles;
 
 namespace C_Snap_Snap
 {
     internal class Block
     {
-        private readonly Pen DrawPen = new Pen(Color.Orange, 3);
-        private readonly Pen Highlight = new Pen(Color.White, 1);
+        private static readonly Pen DrawPen = new Pen(Color.Orange, 3);
+        private static readonly Pen Highlight = new Pen(Color.White, 1);
 
         protected Block next;
         protected Block prev;
@@ -14,6 +17,13 @@ namespace C_Snap_Snap
 
         public string File { get; set; }
         public Point Pos { get; set; }
+        public int Bottom
+        {
+            get 
+            {
+                return Rectangles[Rectangles.Count - 1].Bottom;
+            }
+        }
         public bool IsDefault { get; set; }
         public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
 
@@ -34,9 +44,9 @@ namespace C_Snap_Snap
 
         public bool IsHover(Point mouse)
         {
-            foreach (Rectangle rect in Rectangles)
+            for (int i = 0; i < Rectangles.Count; i++)
             {
-                if (rect.Left <= mouse.X && rect.Right >= mouse.X && rect.Top <= mouse.Y && rect.Bottom >= mouse.Y) return true;
+                if (Rectangles[i].Contains(mouse)) return true;
             }
             return false;
         }
@@ -47,6 +57,33 @@ namespace C_Snap_Snap
             for (int i = 0; i < Rectangles.Count; i++)
             {
                 Rectangles[i] = new Rectangle(pos.X, pos.Y, Rectangles[i].Width, Rectangles[i].Height);
+            }
+            if (next != null)
+            {
+                next.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
+            }
+        }
+
+        public void SnapTo(Block block)
+        {
+            if (block == null) return;
+            if (block == this) return;
+            if (block.next == null)
+            {
+                this.prev = block;
+                this.UpdatePos(new Point(block.Pos.X, block.Bottom));
+                block.next = this;
+            }
+            else
+            {
+                this.prev = block;
+                this.UpdatePos(new Point(block.Pos.X, block.Bottom));
+                this.next = block.next;
+
+                block.next.prev = this;
+                this.next.UpdatePos(new Point(Pos.X, this.Bottom));
+
+                block.next = this;
             }
         }
     }

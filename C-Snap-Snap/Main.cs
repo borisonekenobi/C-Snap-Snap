@@ -186,7 +186,7 @@ namespace C_Snap_Snap
 
         private void NewFile_MouseMove(object sender, MouseEventArgs e)
         {
-            MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y));
+            MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y)); // need to change MouseConstant to change dynamically with screen
             if (selectedBlock == null) return;
             selectedBlock.Pos = new Point(e.X + distanceFromMouse.X, e.Y + distanceFromMouse.Y);
             Files.SelectedTab.Invalidate();
@@ -222,6 +222,16 @@ namespace C_Snap_Snap
 
         private void Files_MouseUp(object sender, MouseEventArgs e)
         {
+            if (selectedBlock == null) return;
+            foreach (var block in blocks)
+            {
+                if (block.IsHover(MousePos))
+                {
+                    selectedBlock.SnapTo(block);
+                    Files.SelectedTab.Invalidate();
+                    break;
+                }
+            }
             breakLoop = true;
         }
 
@@ -229,7 +239,7 @@ namespace C_Snap_Snap
         {
             while (!breakLoop)
             {
-                selectedBlock.UpdatePos(new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y));
+                selectedBlock.UpdatePos(new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y)); // MousePos.Y returning a very large (greater than int.MaxValue) value
             }
             selectedBlock = null;
         }
