@@ -86,5 +86,12 @@ namespace C_Snap_Snap
                 block.next = this;
             }
         }
+
+        public void UnSnap()
+        {
+            if (this.prev == null) return;
+            this.prev.next = null;
+            this.prev = null;
+        }
     }
 }

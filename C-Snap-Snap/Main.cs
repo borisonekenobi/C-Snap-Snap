@@ -203,6 +203,8 @@ namespace C_Snap_Snap
                     if (block.IsHover(MousePos))
                     {
                         selectedBlock = block;
+                        selectedBlock.UnSnap();
+                        break;
                     }
                 }
 
