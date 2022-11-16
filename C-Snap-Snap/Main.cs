@@ -24,7 +24,6 @@ namespace C_Snap_Snap
         private bool resettingLanguage = false;
         private readonly List<string> filePaths = new List<string>();
         private readonly List<Block> blocks = new List<Block>();
-        private bool breakLoop = false;
         private Block selectedBlock;
         private Point distanceFromMouse = new Point(0, 0);
 
@@ -189,12 +188,12 @@ namespace C_Snap_Snap
             MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y)); // need to change MouseConstant to change dynamically with screen
             if (selectedBlock == null) return;
             selectedBlock.Pos = new Point(e.X + distanceFromMouse.X, e.Y + distanceFromMouse.Y);
+            UpdatePos();
             Files.SelectedTab.Invalidate();
         }
 
         private void Files_MouseDown(object sender, MouseEventArgs e)
         {
-            breakLoop = false;
             if (e.Button == MouseButtons.Left)
             {
                 if (blocks.Count == 0) return;
@@ -211,8 +210,6 @@ namespace C_Snap_Snap
                 if (selectedBlock != null)
                 {
                     distanceFromMouse = new Point(selectedBlock.Pos.X - MousePos.X, selectedBlock.Pos.Y - MousePos.Y);
-                    Task t = new Task(UpdatePos);
-                    t.Start();
                 }
             }
             else if (e.Button == MouseButtons.Right)
@@ -227,6 +224,7 @@ namespace C_Snap_Snap
             if (selectedBlock == null) return;
             foreach (var block in blocks)
             {
+                if (selectedBlock == block) continue;
                 if (block.IsHover(MousePos))
                 {
                     selectedBlock.SnapTo(block);
@@ -234,16 +232,12 @@ namespace C_Snap_Snap
                     break;
                 }
             }
-            breakLoop = true;
+            selectedBlock = null;
         }
 
         private void UpdatePos()
         {
-            while (!breakLoop)
-            {
-                selectedBlock.UpdatePos(new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y)); // MousePos.Y returning a very large (greater than int.MaxValue) value
-            }
-            selectedBlock = null;
+            selectedBlock.UpdatePos(new Point(MousePos.X + distanceFromMouse.X, MousePos.Y + distanceFromMouse.Y));
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

@@ -67,7 +67,6 @@ namespace C_Snap_Snap
         public void SnapTo(Block block)
         {
             if (block == null) return;
-            if (block == this) return;
             if (block.next == null)
             {
                 this.prev = block;
