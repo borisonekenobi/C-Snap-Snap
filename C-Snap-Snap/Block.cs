@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
-using System.Windows.Forms.VisualStyles;
 
 namespace C_Snap_Snap
 {
-    internal class Block
+    internal abstract class Block
     {
-        private static readonly Pen DrawPen = new Pen(Color.Orange, 3);
-        private static readonly Pen Highlight = new Pen(Color.White, 1);
+        protected static readonly Pen DrawPen = new Pen(Color.Orange, 3);
+        protected static readonly Pen Highlight = new Pen(Color.White, 1);
 
         protected Block next;
         protected Block prev;
@@ -36,11 +33,8 @@ namespace C_Snap_Snap
             this.Pos = pos;
         }
 
-        public void Draw(Graphics g, bool isSelected)
-        {
-            g.DrawRectangles(DrawPen, Rectangles.ToArray());
-            if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
-        }
+        public abstract void Draw(Graphics g, bool isSelected);
+        public abstract void UpdatePos(Point pos);
 
         public bool IsHover(Point mouse)
         {
@@ -51,18 +45,6 @@ namespace C_Snap_Snap
             return false;
         }
 
-        public void UpdatePos(Point pos)
-        {
-            Pos = pos;
-            for (int i = 0; i < Rectangles.Count; i++)
-            {
-                Rectangles[i] = new Rectangle(pos.X, pos.Y, Rectangles[i].Width, Rectangles[i].Height);
-            }
-            if (next != null)
-            {
-                next.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
-            }
-        }
 
         public void SnapTo(Block block)
         {
