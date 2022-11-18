@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Xml.Linq;
 
 namespace C_Snap_Snap
@@ -11,8 +12,10 @@ namespace C_Snap_Snap
         private int numInside;
 
         public IfStatement(string file, Point pos) : this(file, null, null, pos, null, false)
-        {
-        }
+        { }
+
+        public IfStatement(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, isDefault)
+        { }
         
         public IfStatement(string file, Block next, Block prev, Point pos, Block inside, bool isDefault) : base(file, next, prev, pos)
         {
@@ -45,6 +48,11 @@ namespace C_Snap_Snap
             {
                 next.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
             }
+        }
+
+        public override Block Clone()
+        {
+            return new IfStatement(Main.Files.SelectedTab.Name, next, prev, Pos, inside, false);
         }
     }
 }

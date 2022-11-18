@@ -11,12 +11,13 @@ namespace C_Snap_Snap
         public string Value { get; set; }
 
         public Variable(string file, Point pos) : this(file, null, null, pos, null, null, null, false)
-        {
-        }
+        { }
+
+        public Variable(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, null, null, isDefault)
+        { }
 
         public Variable(string file, Block next, Block prev, Point pos, string type, string name, string value) : this(file, next, prev, pos, type, name, value, false)
-        {
-        }
+        { }
 
         public Variable(string file, Block next, Block prev, Point pos, string type, string name, string value, bool isDefault) : base(file, next, prev, pos)
         {
@@ -50,6 +51,11 @@ namespace C_Snap_Snap
             {
                 next.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
             }
+        }
+
+        public override Block Clone()
+        {
+            return new Variable(Main.Files.SelectedTab.Name, next, prev, Pos, Type, Name, Value, false);
         }
     }
 }

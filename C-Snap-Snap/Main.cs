@@ -54,6 +54,16 @@ namespace C_Snap_Snap
             }
             Blocks.SelectedIndex = 0;
 
+            blocks.Add(new Variable(Blocks.TabPages[0].Name, PointToClient(new Point((Blocks.Left + Blocks.Right) / 2, (Blocks.Top + Blocks.Bottom) / 2)), true)); // need to adjust position
+            blocks.Add(new IfStatement(Blocks.TabPages[1].Name, PointToClient(new Point((Blocks.Left + Blocks.Right) / 2, (Blocks.Top + Blocks.Bottom) / 2)), true));
+            //TODO: IfElseStatement - TabPages[1]
+            //TODO: IfElifElseStatement - TabPages[1]
+            //TODO: ForLoop - TabPages[2]
+            //TODO: WhileLoop - TabPages[2]
+            //TODO: DoWhileLoop - TabPages[2]
+            //TODO: MathExpressions - TabPages[3]
+            Blocks.SelectedTab.Invalidate();
+
             initDone = true;
         }
 
@@ -84,7 +94,7 @@ namespace C_Snap_Snap
                 BlockCloser.Text = ">";
             }
         }
-
+        
         private void Language_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!initDone) return;
@@ -136,6 +146,15 @@ namespace C_Snap_Snap
                 return;
             }
 
+            foreach (TabPage currentFile in Files.TabPages)
+            {
+                if (currentFile.Name == sfd.FileName)
+                {
+                    Files.SelectedTab = currentFile;
+                    return;
+                }
+            }
+
             var file = new FileInfo(sfd.FileName);
             filePaths.Add(file.FullName);
 
@@ -173,7 +192,7 @@ namespace C_Snap_Snap
         {
             foreach (var block in blocks)
             {
-                if (block.File == Files.SelectedTab.Name) block.Draw(e.Graphics, block == selectedBlock);
+                if (block.File == Files.SelectedTab.Name || block.File == Blocks.SelectedTab.Name) block.Draw(e.Graphics, block == selectedBlock);
             }
             /*using (Pen pen = new Pen(Color.Blue, 3))
             {
@@ -201,21 +220,20 @@ namespace C_Snap_Snap
                 {
                     if (block.IsHover(MousePos))
                     {
-                        selectedBlock = block;
-                        selectedBlock.UnSnap();
-                        break;
+                        if (block.File == Files.SelectedTab.Name || block.File == Blocks.SelectedTab.Name) selectedBlock = block;
                     }
                 }
 
                 if (selectedBlock != null)
                 {
+                    if (selectedBlock.IsDefault)
+                    {
+                        selectedBlock = selectedBlock.Clone();
+                        blocks.Add(selectedBlock);
+                    }
+                    selectedBlock.UnSnap();
                     distanceFromMouse = new Point(selectedBlock.Pos.X - MousePos.X, selectedBlock.Pos.Y - MousePos.Y);
                 }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                blocks.Add(new IfStatement(filePaths[Files.SelectedIndex], MousePos));
-                Files.SelectedTab.Invalidate();
             }
         }
 
@@ -248,6 +266,11 @@ namespace C_Snap_Snap
             {
                 //save changes to file
             }
+        }
+
+        private void Blocks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Files.SelectedTab != null) Files.SelectedTab.Invalidate();
         }
     }
 }

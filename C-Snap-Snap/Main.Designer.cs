@@ -189,6 +189,7 @@
             this.Blocks.SelectedIndex = 0;
             this.Blocks.Size = new System.Drawing.Size(170, 401);
             this.Blocks.TabIndex = 0;
+            this.Blocks.SelectedIndexChanged += new System.EventHandler(this.Blocks_SelectedIndexChanged);
             // 
             // Variables
             // 

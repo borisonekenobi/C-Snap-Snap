@@ -24,7 +24,6 @@ namespace C_Snap_Snap
         public bool IsDefault { get; set; }
         public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
 
-
         public Block(string file, Block next, Block prev, Point pos)
         {
             this.File = file;
@@ -35,6 +34,7 @@ namespace C_Snap_Snap
 
         public abstract void Draw(Graphics g, bool isSelected);
         public abstract void UpdatePos(Point pos);
+        public abstract Block Clone();
 
         public bool IsHover(Point mouse)
         {
