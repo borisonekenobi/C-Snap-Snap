@@ -214,7 +214,7 @@ namespace C_Snap_Snap
             }
             else if (e.Button == MouseButtons.Right)
             {
-                blocks.Add(new Variable(filePaths[Files.SelectedIndex], MousePos));
+                blocks.Add(new IfStatement(filePaths[Files.SelectedIndex], MousePos));
                 Files.SelectedTab.Invalidate();
             }
         }
