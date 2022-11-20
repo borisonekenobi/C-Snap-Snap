@@ -10,10 +10,10 @@ namespace C_Snap_Snap
         public string Name { get; set; }
         public string Value { get; set; }
 
-        public Variable(string file, Point pos) : this(file, null, null, pos, null, null, null, false)
+        public Variable(string file, Point pos) : this(file, null, null, pos, "null", "null", "null", false)
         { }
 
-        public Variable(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, null, null, isDefault)
+        public Variable(string file, Point pos, bool isDefault) : this(file, null, null, pos, "null", "null", "null", isDefault)
         { }
 
         public Variable(string file, Block next, Block prev, Point pos, string type, string name, string value) : this(file, next, prev, pos, type, name, value, false)
@@ -56,6 +56,11 @@ namespace C_Snap_Snap
         public override Block Clone()
         {
             return new Variable(Main.Files.SelectedTab.Name, next, prev, Pos, Type, Name, Value, false);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1} = {2};\n", Type, Name, Value);
         }
     }
 }

@@ -10,19 +10,21 @@ namespace C_Snap_Snap
 
         private Block inside;
         private int numInside;
+        private string condition;
 
-        public IfStatement(string file, Point pos) : this(file, null, null, pos, null, false)
+        public IfStatement(string file, Point pos) : this(file, null, null, pos, null, "null", false)
         { }
 
-        public IfStatement(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, isDefault)
+        public IfStatement(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, "null", isDefault)
         { }
         
-        public IfStatement(string file, Block next, Block prev, Point pos, Block inside, bool isDefault) : base(file, next, prev, pos)
+        public IfStatement(string file, Block next, Block prev, Point pos, Block inside, string condition ,bool isDefault) : base(file, next, prev, pos)
         {
             this.next = next;
             this.prev = prev;
             this.Pos = pos;
             this.inside = inside;
+            this.condition = condition;
             this.IsDefault = isDefault;
 
             //color = Color.Orange;
@@ -52,7 +54,12 @@ namespace C_Snap_Snap
 
         public override Block Clone()
         {
-            return new IfStatement(Main.Files.SelectedTab.Name, next, prev, Pos, inside, false);
+            return new IfStatement(Main.Files.SelectedTab.Name, next, prev, Pos, inside, condition, false);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("if ({0}) {{\n", condition);
         }
     }
 }

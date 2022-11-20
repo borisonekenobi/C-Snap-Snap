@@ -35,6 +35,7 @@ namespace C_Snap_Snap
         public abstract void Draw(Graphics g, bool isSelected);
         public abstract void UpdatePos(Point pos);
         public abstract Block Clone();
+        public override abstract string ToString();
 
         public bool IsHover(Point mouse)
         {
