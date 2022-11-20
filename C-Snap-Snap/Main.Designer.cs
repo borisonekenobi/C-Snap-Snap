@@ -133,6 +133,7 @@
             this.Export.TabIndex = 1;
             this.Export.Text = "Export";
             this.Export.UseVisualStyleBackColor = true;
+            this.Export.Click += new System.EventHandler(this.Export_Click);
             // 
             // Language
             // 

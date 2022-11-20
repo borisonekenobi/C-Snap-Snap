@@ -176,16 +176,16 @@ namespace C_Snap_Snap
             File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
         }
 
-        private string FileExt(string language) // will be used for the export button
+        private string FileExt()
         {
-            switch (language)
+            switch (Language.Text)
             {
-                case "C": return "C (*.c;*.i)|*.c;*.i|";
-                case "C#": return "C# (*.cs;*.csx;*.cake)|*.cs;*.csx;*.cake|";
-                case "C++": return "C++ (*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii)|*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.h++;*.h;*.ii|";
+                case "C": return ".c";
+                case "C#": return ".cs";
+                case "C++": return ".cpp";
                     //TODO: add more languages
             }
-            return language;
+            return Language.Text;
         }
 
         private void NewFiles_Paint(object sender, PaintEventArgs e)
@@ -264,13 +264,26 @@ namespace C_Snap_Snap
             if (saveChanges == DialogResult.Cancel) e.Cancel = true;
             else if (saveChanges == DialogResult.Yes)
             {
-                //save changes to file
+                // save changes to .snap file
             }
         }
 
         private void Blocks_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (Files.SelectedTab != null) Files.SelectedTab.Invalidate();
+        }
+
+        private void Export_Click(object sender, EventArgs e)
+        {
+            foreach (TabPage file in Files.TabPages)
+            {
+                string output = "#include <iostream>\nusing namespace std;\nint main() {\n   ";
+                // add blocks to output
+                output += "\n   return 0;\n}";
+
+                int index = file.Name.LastIndexOf(".");
+                File.WriteAllText(file.Name.Substring(0, index) + FileExt(), output);
+            }
         }
     }
 }
