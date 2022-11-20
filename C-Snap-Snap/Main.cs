@@ -173,6 +173,9 @@ namespace C_Snap_Snap
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
 
+            // dummy block for testing
+            blocks.Add(new Variable(Files.SelectedTab.Name, new Point(0, 0)));
+
             File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
         }
 
@@ -277,9 +280,13 @@ namespace C_Snap_Snap
         {
             foreach (TabPage file in Files.TabPages)
             {
-                string output = "#include <iostream>\nusing namespace std;\nint main() {\n   ";
-                // add blocks to output
-                output += "\n   return 0;\n}";
+                string output = "#include <iostream>\nusing namespace std;\nint main() {\n";
+                foreach (Block block in blocks)
+                {
+                    if (block.File != file.Name) continue;
+                    output += "\t" + block.ToString();
+                }
+                output += "\n\treturn 0;\n}";
 
                 int index = file.Name.LastIndexOf(".");
                 File.WriteAllText(file.Name.Substring(0, index) + FileExt(), output);
