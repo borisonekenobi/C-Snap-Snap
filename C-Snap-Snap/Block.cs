@@ -5,13 +5,13 @@ namespace C_Snap_Snap
 {
     internal abstract class Block
     {
-        protected static readonly Pen DrawPen = new Pen(Color.Orange, 3);
         protected static readonly Pen Highlight = new Pen(Color.White, 1);
 
         protected Block next;
         protected Block prev;
         protected Color color;
 
+        public abstract SolidBrush brush { get; }
         public string File { get; set; }
         public Point Pos { get; set; }
         public int Bottom
