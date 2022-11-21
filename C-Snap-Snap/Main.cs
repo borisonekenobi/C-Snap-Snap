@@ -54,8 +54,8 @@ namespace C_Snap_Snap
             }
             Blocks.SelectedIndex = 0;
 
-            blocks.Add(new Variable(Blocks.TabPages[0].Name, PointToClient(new Point((Blocks.Left + Blocks.Right) / 2, (Blocks.Top + Blocks.Bottom) / 2)), true)); // need to adjust position
-            blocks.Add(new IfStatement(Blocks.TabPages[1].Name, PointToClient(new Point((Blocks.Left + Blocks.Right) / 2, (Blocks.Top + Blocks.Bottom) / 2)), true));
+            blocks.Add(new Variable(Blocks.TabPages[0].Name, new Point(0, 0), true)); // need to adjust position
+            blocks.Add(new IfStatement(Blocks.TabPages[1].Name, new Point(0, 0), true));
             //TODO: IfElseStatement - TabPages[1]
             //TODO: IfElifElseStatement - TabPages[1]
             //TODO: ForLoop - TabPages[2]
@@ -173,9 +173,6 @@ namespace C_Snap_Snap
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
 
-            // dummy block for testing
-            blocks.Add(new Variable(Files.SelectedTab.Name, new Point(0, 0)));
-
             File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
         }
 
@@ -197,12 +194,17 @@ namespace C_Snap_Snap
             {
                 if (block.File == Files.SelectedTab.Name || block.File == Blocks.SelectedTab.Name) block.Draw(e.Graphics, block == selectedBlock);
             }
-            /*using (Pen pen = new Pen(Color.Blue, 3))
+            using (Pen pen = new Pen(Color.Blue, 3))
             {
                 int size = 3;
                 e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - size, MousePos.Y - size, 2 * size, 2 * size));
                 if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - size, selectedBlock.Pos.Y - size, 2 * size, 2 * size));
-            }*/
+            
+                for (int i = 0; i < 100; i+=10)
+                {
+                    e.Graphics.DrawEllipse(pen, new Rectangle(i - 1, i - 1, 2, 2));
+                }
+            }
         }
 
         private void NewFile_MouseMove(object sender, MouseEventArgs e)
@@ -271,9 +273,10 @@ namespace C_Snap_Snap
             }
         }
 
+        // temporary method because blocks are drawn on main drawing area
         private void Blocks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Files.SelectedTab != null) Files.SelectedTab.Invalidate();
+            Files.SelectedTab?.Invalidate();
         }
 
         private void Export_Click(object sender, EventArgs e)
