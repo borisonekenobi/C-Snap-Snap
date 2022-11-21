@@ -194,17 +194,12 @@ namespace C_Snap_Snap
             {
                 if (block.File == Files.SelectedTab.Name || block.File == Blocks.SelectedTab.Name) block.Draw(e.Graphics, block == selectedBlock);
             }
-            using (Pen pen = new Pen(Color.Blue, 3))
+            /*using (Pen pen = new Pen(Color.Blue, 3))
             {
                 int size = 3;
                 e.Graphics.DrawEllipse(pen, new Rectangle(MousePos.X - size, MousePos.Y - size, 2 * size, 2 * size));
                 if (selectedBlock != null) e.Graphics.DrawEllipse(pen, new Rectangle(selectedBlock.Pos.X - size, selectedBlock.Pos.Y - size, 2 * size, 2 * size));
-            
-                for (int i = 0; i < 100; i+=10)
-                {
-                    e.Graphics.DrawEllipse(pen, new Rectangle(i - 1, i - 1, 2, 2));
-                }
-            }
+            }*/
         }
 
         private void NewFile_MouseMove(object sender, MouseEventArgs e)
