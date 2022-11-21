@@ -5,6 +5,12 @@ namespace C_Snap_Snap
     internal class Variable : Block
     {
         private static readonly Size size = new Size(100, 30);
+        public override SolidBrush brush {
+            get
+            {
+                return new SolidBrush(Color.FromArgb(255, 140, 26));
+            } 
+        }
 
         public string Type { get; set; }
         public string Name { get; set; }
@@ -36,7 +42,7 @@ namespace C_Snap_Snap
 
         public override void Draw(Graphics g, bool isSelected)
         {
-            g.DrawRectangles(DrawPen, Rectangles.ToArray());
+            g.FillRectangles(brush, Rectangles.ToArray());
             if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
         }
 
