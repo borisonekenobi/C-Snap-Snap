@@ -51,9 +51,10 @@ namespace C_Snap_Snap
         public override void UpdatePos(Point pos)
         {
             Pos = pos;
-            Rectangles[0] = new Rectangle(pos.X + 10 * IndentAmount(), pos.Y, Rectangles[0].Width, Rectangles[0].Height);
-            Rectangles[1] = new Rectangle(pos.X + 10 * IndentAmount(), pos.Y + 30, Rectangles[1].Width, Rectangles[1].Height);
-            Rectangles[2] = new Rectangle(pos.X + 10 * IndentAmount(), pos.Y + 30 * 2, Rectangles[2].Width, Rectangles[2].Height);
+            Rectangles[0] = new Rectangle(pos.X, pos.Y, Rectangles[0].Width, Rectangles[0].Height);
+            Rectangles[1] = new Rectangle(pos.X, pos.Y + 30, Rectangles[1].Width, Rectangles[1].Height);
+            Rectangles[2] = new Rectangle(pos.X, pos.Y + 30 * 2, Rectangles[2].Width, Rectangles[2].Height);
+            Inside?.UpdatePos(new Point(Rectangles[1].Right, Rectangles[0].Bottom));
             Next?.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
         }
 

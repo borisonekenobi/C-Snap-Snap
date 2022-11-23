@@ -50,7 +50,7 @@ namespace C_Snap_Snap
             Pos = pos;
             for (int i = 0; i < Rectangles.Count; i++)
             {
-                Rectangles[i] = new Rectangle(pos.X + 10 * IndentAmount(), pos.Y, Rectangles[i].Width, Rectangles[i].Height);
+                Rectangles[i] = new Rectangle(pos.X, pos.Y, Rectangles[i].Width, Rectangles[i].Height);
             }
             Next?.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
         }
