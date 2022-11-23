@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace C_Snap_Snap
 {
@@ -26,6 +25,7 @@ namespace C_Snap_Snap
         private readonly List<Block> blocks = new List<Block>();
         private Block selectedBlock;
         private Point distanceFromMouse = new Point(0, 0);
+        private int counter = 1;
 
         public Main()
         {
@@ -173,6 +173,8 @@ namespace C_Snap_Snap
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
 
+            blocks.Add(new Function(Files.SelectedTab.Name, null, null, new Point(30, 30), "int", "main", null, false));
+
             File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
         }
 
@@ -278,17 +280,63 @@ namespace C_Snap_Snap
         {
             foreach (TabPage file in Files.TabPages)
             {
-                string output = "#include <iostream>\nusing namespace std;\nint main() {\n";
-                foreach (Block block in blocks)
+                string output = "#include <iostream>\nusing namespace std;\n";
+                
+                foreach(Block b in blocks)
                 {
-                    if (block.File != file.Name) continue;
-                    output += "\t" + block.ToString();
+                    if (b is Function) output += ExportFunction(b as Function);
                 }
-                output += "\n\treturn 0;\n}";
 
                 int index = file.Name.LastIndexOf(".");
                 File.WriteAllText(file.Name.Substring(0, index) + FileExt(), output);
             }
+        }
+
+        private string ExportBlock(Block b)
+        {
+            if (b is Variable) return ExportVariable(b as Variable);
+            else if (b is IfStatement) return ExportIfStatement(b as IfStatement);
+            else if (b is Function) return ExportFunction(b as Function);
+            // will add more
+            else return b.ToString();
+        }
+
+        private string ExportVariable(Variable block)
+        {
+            return new string('\t', counter) + block.ToString();
+        }
+
+        private string ExportIfStatement(IfStatement block)
+        {
+            string output = new string('\t', counter) + block.ToString();
+
+            if (block.Inside == null) return output += new string('\t', counter) + "}\n";
+            counter++;
+            Block next = block.Inside;
+            output += ExportBlock(next);
+            while (next.Next != null)
+            {
+                next = next.Next;
+                output += ExportBlock(next);
+            }
+            counter--;
+            output += new string('\t', counter) + "}\n";
+
+            return output;
+        }
+
+        private string ExportFunction(Function block)
+        {
+            string output = block.ToString();
+            Block next = block;
+
+            while (next.Next != null)
+            {
+                next = next.Next;
+                output += ExportBlock(next);
+            }
+
+            return output + "}";
         }
     }
 }

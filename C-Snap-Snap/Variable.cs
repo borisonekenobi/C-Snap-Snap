@@ -5,11 +5,12 @@ namespace C_Snap_Snap
     internal class Variable : Block
     {
         private static readonly Size size = new Size(100, 30);
-        public override SolidBrush brush {
-            get
-            {
-                return new SolidBrush(Color.FromArgb(255, 140, 26));
-            } 
+        public override SolidBrush Brush {
+            get { return new SolidBrush(Color.FromArgb(255, 140, 26)); } 
+        }
+        public override bool Indent
+        {
+            get { return false; }
         }
 
         public string Type { get; set; }
@@ -27,22 +28,20 @@ namespace C_Snap_Snap
 
         public Variable(string file, Block next, Block prev, Point pos, string type, string name, string value, bool isDefault) : base(file, next, prev, pos)
         {
-            this.next = next;
-            this.prev = prev;
+            this.Next = next;
+            this.Prev = prev;
             this.Pos = pos;
             this.Type = type;
             this.Name = name;
             this.Value = value;
             this.IsDefault = isDefault;
 
-            color = Color.Orange;
-
             Rectangles.Add(new Rectangle(pos.X, pos.Y, size.Width, size.Height));
         }
 
         public override void Draw(Graphics g, bool isSelected)
         {
-            g.FillRectangles(brush, Rectangles.ToArray());
+            g.FillRectangles(Brush, Rectangles.ToArray());
             if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
         }
 
@@ -51,17 +50,14 @@ namespace C_Snap_Snap
             Pos = pos;
             for (int i = 0; i < Rectangles.Count; i++)
             {
-                Rectangles[i] = new Rectangle(pos.X, pos.Y, Rectangles[i].Width, Rectangles[i].Height);
+                Rectangles[i] = new Rectangle(pos.X + 10 * IndentAmount(), pos.Y, Rectangles[i].Width, Rectangles[i].Height);
             }
-            if (next != null)
-            {
-                next.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
-            }
+            Next?.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
         }
 
         public override Block Clone()
         {
-            return new Variable(Main.Files.SelectedTab.Name, next, prev, Pos, Type, Name, Value, false);
+            return new Variable(Main.Files.SelectedTab.Name, Next, Prev, Pos, Type, Name, Value, false);
         }
 
         public override string ToString()

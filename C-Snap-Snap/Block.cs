@@ -7,11 +7,10 @@ namespace C_Snap_Snap
     {
         protected static readonly Pen Highlight = new Pen(Color.White, 1);
 
-        protected Block next;
-        protected Block prev;
-        protected Color color;
-
-        public abstract SolidBrush brush { get; }
+        public abstract SolidBrush Brush { get; }
+        public abstract bool Indent { get; }
+        public Block Next { get; set; }
+        public Block Prev { get; set; }
         public string File { get; set; }
         public Point Pos { get; set; }
         public int Bottom
@@ -27,8 +26,8 @@ namespace C_Snap_Snap
         public Block(string file, Block next, Block prev, Point pos)
         {
             this.File = file;
-            this.next = next;
-            this.prev = prev;
+            this.Next = next;
+            this.Prev = prev;
             this.Pos = pos;
         }
 
@@ -46,34 +45,74 @@ namespace C_Snap_Snap
             return false;
         }
 
-
         public void SnapTo(Block block)
         {
             if (block == null) return;
-            if (block.next == null)
+            if (block is Function)
             {
-                this.prev = block;
-                this.UpdatePos(new Point(block.Pos.X, block.Bottom));
-                block.next = this;
+                SnapTo(block as Function);
             }
-            else
+            else if (block is IfStatement)
             {
-                this.prev = block;
-                this.UpdatePos(new Point(block.Pos.X, block.Bottom));
-                this.next = block.next;
-
-                block.next.prev = this;
-                this.next.UpdatePos(new Point(Pos.X, this.Bottom));
-
-                block.next = this;
+                SnapTo(block as IfStatement, 0);
             }
+            else if (block is Variable)
+            {
+                SnapTo(block as Variable);
+            }
+
+            if (this is IfStatement)
+            {
+                ((IfStatement) this).Inside?.SnapTo(this);
+                Next?.SnapTo(this);
+            }
+            else if (this is Function) Next?.SnapTo(this);
+            else Next?.SnapTo(this);
+        }
+
+        private void SnapTo(Function block)
+        {
+            this.Prev = block;
+            block.Next = this;
+            this.UpdatePos(new Point(block.Pos.X + 10, block.Pos.Y + 30));
+
+            this.Next?.SnapTo(this);
+        }
+
+        private void SnapTo(IfStatement block, int section)
+        {
+            this.Prev = block;
+            /*switch (section)
+            {
+                case 0: block.Next = this; break;
+                default: block.Inside = this; break;
+            }*/
+            block.Inside = this;
+            this.UpdatePos(new Point(block.Pos.X + 10, block.Pos.Y + 30));
+
+            this.Next?.SnapTo(this);
+        }
+
+        private void SnapTo(Variable block)
+        {
+            this.Prev = block;
+            block.Next = this;
+            this.UpdatePos(new Point(block.Pos.X, block.Pos.Y + 30));
+
+            this.Next?.SnapTo(this);
         }
 
         public void UnSnap()
         {
-            if (this.prev == null) return;
-            this.prev.next = null;
-            this.prev = null;
+            if (this.Prev == null) return;
+            this.Prev.Next = null;
+            this.Prev = null;
+        }
+
+        public int IndentAmount()
+        {
+            if (this.Prev != null) return (Indent ? 1 : 0) + Prev.IndentAmount();
+            else return Indent ? 1 : 0;
         }
     }
 }
