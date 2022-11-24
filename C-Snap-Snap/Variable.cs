@@ -12,6 +12,10 @@ namespace C_Snap_Snap
         {
             get { return false; }
         }
+        public override int Mimi
+        {
+            get { return size.Height; }
+        }
 
         public string Type { get; set; }
         public string Name { get; set; }

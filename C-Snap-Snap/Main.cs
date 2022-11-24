@@ -220,7 +220,7 @@ namespace C_Snap_Snap
                 if (blocks.Count == 0) return;
                 foreach (var block in blocks)
                 {
-                    if (block.IsHover(MousePos))
+                    if (block.IsHover(MousePos) >= 0)
                     {
                         if (block.File == Files.SelectedTab.Name || block.File == Blocks.SelectedTab.Name) selectedBlock = block;
                     }
@@ -245,9 +245,10 @@ namespace C_Snap_Snap
             foreach (var block in blocks)
             {
                 if (selectedBlock == block) continue;
-                if (block.IsHover(MousePos))
+                int section = block.IsHover(MousePos);
+                if (section >= 0)
                 {
-                    selectedBlock.SnapTo(block);
+                    selectedBlock.SnapTo(block, section);
                     Files.SelectedTab.Invalidate();
                     break;
                 }

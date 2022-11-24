@@ -16,8 +16,22 @@ namespace C_Snap_Snap
         {
             get { return true; }
         }
+        public override int Mimi
+        {
+            get
+            {
+                if (Next == null) return 30;
+                Block i = Next;
+                int size = i.Mimi;
+                while (i.Next != null)
+                {
+                    i = i.Next;
+                    size = i.Mimi;
+                }
+                return size;
+            }
+        }
 
-        private int numInside;
         private string returnType;
         private string parameters;
 
@@ -54,8 +68,8 @@ namespace C_Snap_Snap
         {
             Pos = pos;
             Rectangles[0] = new Rectangle(pos.X, pos.Y, Rectangles[0].Width, Rectangles[0].Height);
-            Rectangles[1] = new Rectangle(pos.X, pos.Y + 30, Rectangles[1].Width, Rectangles[1].Height);
-            Rectangles[2] = new Rectangle(pos.X, pos.Y + 30 * 2, Rectangles[2].Width, Rectangles[2].Height);
+            Rectangles[1] = new Rectangle(pos.X, Rectangles[0].Bottom, Rectangles[1].Width, SizeInside(Next));
+            Rectangles[2] = new Rectangle(pos.X, Rectangles[1].Bottom, Rectangles[2].Width, Rectangles[2].Height);
             Next?.UpdatePos(new Point(Rectangles[1].Right, Rectangles[0].Bottom));
         }
 
