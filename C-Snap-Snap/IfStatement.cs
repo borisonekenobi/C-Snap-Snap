@@ -31,6 +31,7 @@ namespace C_Snap_Snap
                 return size + 70;
             }
         }
+        public override Rectangle[] Rectangles { get; set; }
 
         private string condition;
 
@@ -51,15 +52,16 @@ namespace C_Snap_Snap
             this.condition = condition;
             this.IsDefault = isDefault;
 
-            Rectangles.Add(new Rectangle(pos.X, pos.Y, 100, 30));
-            Rectangles.Add(new Rectangle(pos.X, pos.Y + 30, 10, 30));
-            Rectangles.Add(new Rectangle(pos.X, pos.Y + 30 * 2, 100, 10));
+            Rectangles = new Rectangle[3];
+            Rectangles[0] = new Rectangle(pos.X, pos.Y, 100, 30);
+            Rectangles[1] = new Rectangle(pos.X, pos.Y + 30, 10, 33);
+            Rectangles[2] = new Rectangle(pos.X, pos.Y + 30 * 2, 100, 10);
         }
 
         public override void Draw(Graphics g, bool isSelected)
         {
-            g.FillRectangles(Brush, Rectangles.ToArray());
-            if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
+            g.FillRectangles(Brush, Rectangles);
+            if (isSelected) g.DrawRectangles(Highlight, Rectangles);
         }
 
         public override void UpdatePos(Point pos)
@@ -69,7 +71,7 @@ namespace C_Snap_Snap
             Rectangles[1] = new Rectangle(pos.X, Rectangles[0].Bottom, Rectangles[1].Width, SizeInside(Inside));
             Rectangles[2] = new Rectangle(pos.X, Rectangles[1].Bottom, Rectangles[2].Width, Rectangles[2].Height);
             Inside?.UpdatePos(new Point(Rectangles[1].Right, Rectangles[0].Bottom));
-            Next?.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
+            Next?.UpdatePos(new Point(Rectangles[2].Left, Bottom));
         }
 
         public override Block Clone()

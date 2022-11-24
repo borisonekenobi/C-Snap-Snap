@@ -10,6 +10,7 @@ namespace C_Snap_Snap
         public abstract SolidBrush Brush { get; }
         public abstract bool Indent { get; }
         public abstract int Mimi { get; }
+        public abstract Rectangle[] Rectangles { get; set; }
         public Block Next { get; set; }
         public Block Prev { get; set; }
         public string File { get; set; }
@@ -18,11 +19,10 @@ namespace C_Snap_Snap
         {
             get 
             {
-                return Rectangles[Rectangles.Count - 1].Bottom;
+                return Rectangles[Rectangles.Length - 1].Bottom;
             }
         }
         public bool IsDefault { get; set; }
-        public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
 
         public Block(string file, Block next, Block prev, Point pos)
         {

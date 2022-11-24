@@ -16,6 +16,7 @@ namespace C_Snap_Snap
         {
             get { return size.Height; }
         }
+        public override Rectangle[] Rectangles { get; set; }
 
         public string Type { get; set; }
         public string Name { get; set; }
@@ -40,23 +41,21 @@ namespace C_Snap_Snap
             this.Value = value;
             this.IsDefault = isDefault;
 
-            Rectangles.Add(new Rectangle(pos.X, pos.Y, size.Width, size.Height));
+            Rectangles = new Rectangle[1];
+            Rectangles[0] = new Rectangle(pos.X, pos.Y, size.Width, size.Height);
         }
 
         public override void Draw(Graphics g, bool isSelected)
         {
-            g.FillRectangles(Brush, Rectangles.ToArray());
-            if (isSelected) g.DrawRectangles(Highlight, Rectangles.ToArray());
+            g.FillRectangles(Brush, Rectangles);
+            if (isSelected) g.DrawRectangles(Highlight, Rectangles);
         }
 
         public override void UpdatePos(Point pos)
         {
             Pos = pos;
-            for (int i = 0; i < Rectangles.Count; i++)
-            {
-                Rectangles[i] = new Rectangle(pos.X, pos.Y, Rectangles[i].Width, Rectangles[i].Height);
-            }
-            Next?.UpdatePos(new Point(Rectangles[Rectangles.Count - 1].Left, Bottom));
+            Rectangles[0] = new Rectangle(pos.X, pos.Y, Rectangles[0].Width, Rectangles[0].Height);
+            Next?.UpdatePos(new Point(Rectangles[0].Left, Bottom));
         }
 
         public override Block Clone()
