@@ -39,7 +39,7 @@ namespace C_Snap_Snap
 
         public int IsHover(Point mouse)
         {
-            for (int i = 0; i < Rectangles.Count; i++)
+            for (int i = 0; i < Rectangles.Length; i++)
             {
                 if (Rectangles[i].Contains(mouse)) return i / 2;
             }

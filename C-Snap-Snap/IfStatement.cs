@@ -28,7 +28,7 @@ namespace C_Snap_Snap
                     i = i.Next;
                     size += i.Mimi;
                 }
-                return size + 70;
+                return size + 40;
             }
         }
         public override Rectangle[] Rectangles { get; set; }
