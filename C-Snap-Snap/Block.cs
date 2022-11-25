@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Media;
 
 namespace C_Snap_Snap
 {
     internal abstract class Block
     {
         protected static readonly Pen Highlight = new Pen(Color.White, 1);
+        protected static readonly SoundPlayer Snap = new SoundPlayer(Properties.Resources.snap);
+        protected static readonly SoundPlayer Unsnap = new SoundPlayer(Properties.Resources.unsnap);
 
         public abstract SolidBrush Brush { get; }
         public abstract bool Indent { get; }
@@ -49,6 +51,9 @@ namespace C_Snap_Snap
         public void SnapTo(Block block, int section)
         {
             if (block == null) return;
+
+            Snap.Play();
+
             if (block is Function)
             {
                 SnapTo(block as Function);
@@ -109,6 +114,8 @@ namespace C_Snap_Snap
         public void UnSnap()
         {
             if (Prev == null) return;
+
+            Unsnap.Play();
             if (Prev is IfStatement)
             {
                 if (((IfStatement) Prev).Inside == this)
