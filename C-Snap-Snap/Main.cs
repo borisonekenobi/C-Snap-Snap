@@ -9,7 +9,7 @@ namespace C_Snap_Snap
 {
     public partial class Main : Form
     {
-        private readonly Point MouseConstant = new Point(177, 70);
+        private readonly Point MouseConstant = new Point(177, 100);
         private readonly Color primary = Color.FromArgb(141, 35, 15);
         private readonly Color secondary = Color.FromArgb(30, 67, 76);
         private readonly Color accent = Color.FromArgb(155, 79, 15);
@@ -34,6 +34,8 @@ namespace C_Snap_Snap
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            MenuStrip.BackColor = accentSecondary;
+
             Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
             Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             //Files.SetStyle(ControlStyles.DoubleBuffered, true);
@@ -279,18 +281,16 @@ namespace C_Snap_Snap
 
         private void Export_Click(object sender, EventArgs e)
         {
-            foreach (TabPage file in Files.TabPages)
+            TabPage file = Files.SelectedTab;
+            string output = "#include <iostream>\nusing namespace std;\n";
+            
+            foreach(Block b in blocks)
             {
-                string output = "#include <iostream>\nusing namespace std;\n";
-                
-                foreach(Block b in blocks)
-                {
-                    if (b is Function) output += ExportFunction(b as Function);
-                }
-
-                int index = file.Name.LastIndexOf(".");
-                File.WriteAllText(file.Name.Substring(0, index) + FileExt(), output);
+                if (b is Function) output += ExportFunction(b as Function);
             }
+
+            int index = file.Name.LastIndexOf(".");
+            File.WriteAllText(file.Name.Substring(0, index) + FileExt(), output);
         }
 
         private string ExportBlock(Block b)
@@ -338,6 +338,58 @@ namespace C_Snap_Snap
             }
 
             return output + "}";
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            DialogResult isFileSelected = ofd.ShowDialog();
+            if (isFileSelected == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            foreach (TabPage currentFile in Files.TabPages)
+            {
+                if (currentFile.Name == ofd.FileName)
+                {
+                    Files.SelectedTab = currentFile;
+                    return;
+                }
+            }
+
+            var file = new FileInfo(ofd.FileName);
+            filePaths.Add(file.FullName);
+
+            TabPage newFile = new TabPage
+            {
+                Name = ofd.FileName,
+                Text = file.Name,
+                BackColor = primary,
+                ForeColor = primary
+            };
+            newFile.MouseDown += new MouseEventHandler(Files_MouseDown);
+            newFile.MouseUp += new MouseEventHandler(Files_MouseUp);
+            newFile.Paint += new PaintEventHandler(NewFiles_Paint);
+            newFile.MouseMove += new MouseEventHandler(NewFile_MouseMove);
+            Files.TabPages.Add(newFile);
+            Files.SelectedIndex = Files.TabCount - 1;
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Export_Click(sender, e);
+        }
+
+        private void exportAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TabPage current = Files.SelectedTab;
+            foreach (TabPage file in Files.TabPages)
+            {
+                Files.SelectedTab = file;
+                Export_Click(sender, e);
+            }
+            Files.SelectedTab = current;
         }
     }
 }
