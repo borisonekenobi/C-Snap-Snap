@@ -43,7 +43,7 @@ namespace C_Snap_Snap
         public IfStatement(string file, Point pos, bool isDefault) : this(file, null, null, pos, null, "null", isDefault)
         { }
         
-        public IfStatement(string file, Block next, Block prev, Point pos, Block inside, string condition ,bool isDefault) : base(file, next, prev, pos)
+        public IfStatement(string file, Block next, Block prev, Point pos, Block inside, string condition, bool isDefault) : base(file, next, prev, pos)
         {
             this.Next = next;
             this.Prev = prev;
