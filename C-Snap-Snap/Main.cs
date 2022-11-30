@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace C_Snap_Snap
 {
@@ -19,7 +18,8 @@ namespace C_Snap_Snap
 
         private Point MousePos;
         private bool initDone = false;
-        private int prevIndex = 0;
+        private bool openingFile = false;
+        private int prevIndex = -1;
         private bool resettingLanguage = false;
         private readonly List<string> filePaths = new List<string>();
         private readonly List<Block> blocks = new List<Block>();
@@ -135,6 +135,7 @@ namespace C_Snap_Snap
         private void AddFile(object sender, EventArgs e)
         {
             if (!Files.Visible) return;
+            if (openingFile) return;
 
             SaveFileDialog sfd = new SaveFileDialog
             {
@@ -177,7 +178,7 @@ namespace C_Snap_Snap
 
             blocks.Add(new Function(Files.SelectedTab.Name, null, null, new Point(30, 30), "int", "main", null, false));
 
-            File.WriteAllText(sfd.FileName, "TESTING SNAP FILE");
+            File.WriteAllText(sfd.FileName, "");
         }
 
         private string FileExt()
@@ -250,7 +251,7 @@ namespace C_Snap_Snap
                 int section = block.IsHover(MousePos);
                 if (section >= 0)
                 {
-                    selectedBlock.SnapTo(block, section);
+                    block.SnapTo(selectedBlock, section);
                     Files.SelectedTab.Invalidate();
                     break;
                 }
@@ -340,15 +341,80 @@ namespace C_Snap_Snap
             return output + "}";
         }
 
+        private static Point GetPoint(string str)
+        {
+            string[] strs = str.Substring(1, str.Length - 2).Split(',');
+            return new Point(int.Parse(strs[0]), int.Parse(strs[1]));
+        }
+
+        private void AddBlocksFromFile(OpenFileDialog ofd)
+        {
+            StreamReader reader = File.OpenText(ofd.FileName);
+            List<Block> tempBlocks = new List<Block>();
+            string line;
+            string type = null;
+            string[] components = null;
+            int i = 0;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (components != null)
+                {
+                    if (i == components.Length)
+                    {
+                        switch (type)
+                        {
+                            case "Variable": tempBlocks.Add(new Variable(ofd.FileName, null, null, GetPoint(components[3]), components[4], components[5], components[6], false)); break;
+                            case "IfStatement": tempBlocks.Add(new IfStatement(ofd.FileName, null, null, GetPoint(components[3]), null, components[5], false)); break;
+                            case "Function": tempBlocks.Add(new Function(ofd.FileName, null, null, GetPoint(components[3]), components[4], components[5], components[6] == "null" ? "" : components[6], false)); break;
+                        }
+                        components = null;
+                        i = 0;
+                        continue;
+                    }
+                    components[i] = line.Split(':')[1];
+                    i++;
+                }
+                else if (line.StartsWith("Language:"))
+                {
+                    Language.SelectedItem = line.Split(':')[1];
+                    if (Language.SelectedIndex == 0)
+                    {
+                        MessageBox.Show("Unsupported file language!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else if (line.StartsWith("\tVariable:"))
+                {
+                    type = "Variable";
+                    components = new string[7];
+                }
+                else if (line.StartsWith("\tIfStatement"))
+                {
+                    type = "IfStatement";
+                    components = new string[6];
+                }
+                else if (line.StartsWith("\tFunction"))
+                {
+                    type = "Function";
+                    components = new string[7];
+                }
+            }
+
+            blocks.AddRange(tempBlocks);
+        }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            openingFile = true;
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "Snap Files (*.snap)|*.snap|All Files (*.*)|*.*"
+            };
             DialogResult isFileSelected = ofd.ShowDialog();
             if (isFileSelected == DialogResult.Cancel)
             {
                 return;
             }
-
             foreach (TabPage currentFile in Files.TabPages)
             {
                 if (currentFile.Name == ofd.FileName)
@@ -358,7 +424,11 @@ namespace C_Snap_Snap
                 }
             }
 
-            var file = new FileInfo(ofd.FileName);
+            AddBlocksFromFile(ofd);
+
+            Files.Visible = true;
+
+            FileInfo file = new FileInfo(ofd.FileName);
             filePaths.Add(file.FullName);
 
             TabPage newFile = new TabPage
@@ -374,6 +444,7 @@ namespace C_Snap_Snap
             newFile.MouseMove += new MouseEventHandler(NewFile_MouseMove);
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
+            openingFile = false;
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -390,6 +461,11 @@ namespace C_Snap_Snap
                 Export_Click(sender, e);
             }
             Files.SelectedTab = current;
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddFile(sender, e);
         }
     }
 }

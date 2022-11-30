@@ -74,6 +74,25 @@ namespace C_Snap_Snap
             Next?.UpdatePos(new Point(Rectangles[2].Left, Bottom));
         }
 
+        public override void SnapTo(Block block, int section)
+        {
+            Snap.Play();
+
+            if (this.Next != null) block.GetLast().SnapTo(this.Next, 0);
+
+            switch (section)
+            {
+                case 0:
+                    if (this.Inside != null) block.SnapTo(this.Inside, 0);
+                    this.Inside = block;
+                    break;
+                case 1:
+                    this.Next = block;
+                    break;
+            }
+            block.Prev = this;
+        }
+
         public override Block Clone()
         {
             return new IfStatement(Main.Files.SelectedTab.Name, Next, Prev, Pos, Inside, condition, false);

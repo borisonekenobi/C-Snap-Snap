@@ -36,6 +36,7 @@ namespace C_Snap_Snap
 
         public abstract void Draw(Graphics g, bool isSelected);
         public abstract void UpdatePos(Point pos);
+        public abstract void SnapTo(Block block, int section);
         public abstract Block Clone();
         public override abstract string ToString();
 
@@ -46,69 +47,6 @@ namespace C_Snap_Snap
                 if (Rectangles[i].Contains(mouse)) return i / 2;
             }
             return -1;
-        }
-
-        public void SnapTo(Block block, int section)
-        {
-            if (block == null) return;
-
-            Snap.Play();
-
-            if (block is Function)
-            {
-                SnapTo(block as Function);
-            }
-            else if (block is IfStatement)
-            {
-                SnapTo(block as IfStatement, section);
-            }
-            else if (block is Variable)
-            {
-                SnapTo(block as Variable);
-            }
-
-            if (this is IfStatement)
-            {
-                ((IfStatement)this).Inside?.SnapTo(this, 0);
-                Next?.SnapTo(this, -1);
-            }
-            else if (this is Function)
-            {
-                Next?.SnapTo(this, -1);
-            }
-            else Next?.SnapTo(this, -1);
-        }
-
-        private void SnapTo(Function block)
-        {
-            this.Prev = block;
-            block.Next = this;
-            this.UpdatePos(new Point(block.Pos.X + 10, block.Pos.Y + 30));
-
-            this.Next?.SnapTo(this, -1);
-        }
-
-        private void SnapTo(IfStatement block, int section)
-        {
-            this.Prev = block;
-            switch (section)
-            {
-                case 0: block.Inside = this; break;
-                case 1: block.Next = this; break;
-                //default: block.Next = this; break;
-            }
-            this.UpdatePos(new Point(block.Pos.X + 10, block.Pos.Y + 30));
-
-            this.Next?.SnapTo(this, section);
-        }
-
-        private void SnapTo(Variable block)
-        {
-            this.Prev = block;
-            block.Next = this;
-            this.UpdatePos(new Point(block.Pos.X, block.Pos.Y + 30));
-
-            this.Next?.SnapTo(this, -1);
         }
 
         public void UnSnap()
@@ -152,6 +90,16 @@ namespace C_Snap_Snap
                 size += inside.Mimi;
             }
             return size;
+        }
+
+        public Block GetLast()
+        {
+            Block next = this;
+            while(next.Next != null)
+            {
+                next = next.Next;
+            }
+            return next;
         }
     }
 }
