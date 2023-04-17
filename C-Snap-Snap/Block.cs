@@ -37,6 +37,8 @@ namespace C_Snap_Snap
         public abstract void Draw(Graphics g, bool isSelected);
         public abstract void UpdatePos(Point pos);
         public abstract void SnapTo(Block block, int section);
+        public abstract void UnSnap();
+        public abstract void UnSnapFrom(Block block);
         public abstract Block Clone();
         public override abstract string ToString();
 
@@ -47,31 +49,6 @@ namespace C_Snap_Snap
                 if (Rectangles[i].Contains(mouse)) return i / 2;
             }
             return -1;
-        }
-
-        public void UnSnap()
-        {
-            if (Prev == null) return;
-
-            Unsnap.Play();
-            if (Prev is IfStatement)
-            {
-                if (((IfStatement) Prev).Inside == this)
-                {
-                    ((IfStatement)Prev).Inside = null;
-                    Prev = null;
-                }
-                else
-                {
-                    Prev.Next = null;
-                    Prev = null;
-                }
-            }
-            else
-            {
-                Prev.Next = null;
-                Prev = null;
-            }
         }
 
         public int IndentAmount()

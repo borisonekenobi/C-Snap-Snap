@@ -93,6 +93,22 @@ namespace C_Snap_Snap
             block.Prev = this;
         }
 
+        public override void UnSnap()
+        {
+            if (Prev == null) return;
+
+            Unsnap.Play();
+            Prev.UnSnapFrom(this);
+            Prev = null;
+        }
+
+        public override void UnSnapFrom(Block block)
+        {
+            if (Next == null) return;
+            if (Next == block) Next = null;
+            if (Inside == block) Inside = null;
+        }
+
         public override Block Clone()
         {
             return new IfStatement(Main.Files.SelectedTab.Name, Next, Prev, Pos, Inside, condition, false);
