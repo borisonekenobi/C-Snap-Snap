@@ -11,8 +11,9 @@ namespace C_Snap_Snap
         private readonly Point MouseConstant = new Point(177, 100);
 
         private readonly Color formBackground = Color.FromArgb(51, 51, 51);
-        private readonly Color menuStripBackground = Color.FromArgb(60, 60, 60);
-        private readonly Color menuStripText = Color.FromArgb(142, 142, 142);
+        private readonly Color menuStripText = Color.FromArgb(204, 204, 204);
+        private readonly Color menuStripItemText = Color.FromArgb(204, 204, 204);
+        private readonly Color menuStripItemSelectedText = Color.FromArgb(255, 255, 255);
         private readonly Color mainBackground = Color.FromArgb(30, 30, 30);
         private readonly Color sidePanelBackground = Color.FromArgb(37, 37, 38);
         private readonly Color filesBackground = Color.FromArgb(45, 45, 45);
@@ -35,6 +36,7 @@ namespace C_Snap_Snap
         public Main()
         {
             InitializeComponent();
+            MenuStrip.Renderer = new ToolStripProfessionalRenderer(new MenuStripColorTable());
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,9 +44,13 @@ namespace C_Snap_Snap
             this.BackColor = formBackground;
 
             MenuStrip.ForeColor = menuStripText;
-            MenuStrip.BackColor = menuStripBackground;
-            //MenuStrip.<dropdowntext> = Color.FromArgb(204, 204, 204);
-            //MenuStrip.<dropdownbackground> = accent;
+            foreach (ToolStripMenuItem tab in MenuStrip.Items)
+            {
+                foreach (ToolStripItem button in tab.DropDownItems)
+                {
+                    button.ForeColor = menuStripItemText;
+                }
+            }
 
             Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
             Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
@@ -107,7 +113,7 @@ namespace C_Snap_Snap
                 BlockCloser.Text = ">";
             }
         }
-        
+
         private void Language_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!initDone) return;
@@ -295,8 +301,8 @@ namespace C_Snap_Snap
         {
             TabPage file = Files.SelectedTab;
             string output = "#include <iostream>\nusing namespace std;\n";
-            
-            foreach(Block b in blocks)
+
+            foreach (Block b in blocks)
             {
                 if (b is Function) output += ExportFunction(b as Function);
             }
@@ -478,6 +484,121 @@ namespace C_Snap_Snap
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddFile(sender, e);
+        }
+    }
+
+    public class MenuStripColorTable : ProfessionalColorTable
+    {
+        public override Color ToolStripDropDownBackground
+        {
+            get
+            {
+                return Color.FromArgb(30, 30, 30);
+            }
+        }
+
+        public override Color ImageMarginGradientBegin
+        {
+            get
+            {
+                return Color.FromArgb(30, 30, 30);
+            }
+        }
+
+        public override Color ImageMarginGradientMiddle
+        {
+            get
+            {
+                return Color.FromArgb(30, 30, 30);
+            }
+        }
+
+        public override Color ImageMarginGradientEnd
+        {
+            get
+            {
+                return Color.FromArgb(30, 30, 30);
+            }
+        }
+
+        public override Color MenuBorder
+        {
+            get
+            {
+                return Color.FromArgb(69, 69, 69);
+            }
+        }
+
+        public override Color MenuItemBorder
+        {
+            get
+            {
+                return Color.FromArgb(30, 30, 30);
+            }
+        }
+
+        public override Color MenuItemSelected
+        {
+            get
+            {
+                return Color.FromArgb(4, 57, 94);
+            }
+        }
+
+        public override Color MenuStripGradientBegin
+        {
+            get
+            {
+                return Color.FromArgb(60, 60, 60);
+            }
+        }
+
+        public override Color MenuStripGradientEnd
+        {
+            get
+            {
+                return Color.FromArgb(60, 60, 60);
+            }
+        }
+
+        public override Color MenuItemSelectedGradientBegin
+        {
+            get
+            {
+                return Color.FromArgb(69, 70, 70);
+            }
+        }
+
+        public override Color MenuItemSelectedGradientEnd
+        {
+            get
+            {
+                return Color.FromArgb(69, 70, 70);
+            }
+        }
+
+        public override Color MenuItemPressedGradientBegin
+        {
+            get
+            {
+                return Color.FromArgb(69, 70, 70);
+            }
+        }
+
+        public override Color MenuItemPressedGradientEnd
+        {
+            get
+            {
+                return Color.FromArgb(69, 70, 70);
+            }
+        }
+
+        public override Color SeparatorDark
+        {
+            get
+            {
+                return Color.FromArgb(69, 69, 69);
+            }
         }
     }
 }
