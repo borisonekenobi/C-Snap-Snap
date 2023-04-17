@@ -9,10 +9,15 @@ namespace C_Snap_Snap
     public partial class Main : Form
     {
         private readonly Point MouseConstant = new Point(177, 100);
-        private readonly Color primary = Color.FromArgb(141, 35, 15);
-        private readonly Color secondary = Color.FromArgb(30, 67, 76);
-        private readonly Color accent = Color.FromArgb(155, 79, 15);
-        private readonly Color accentSecondary = Color.FromArgb(201, 158, 16);
+
+        private readonly Color formBackground = Color.FromArgb(51, 51, 51);
+        private readonly Color menuStripBackground = Color.FromArgb(60, 60, 60);
+        private readonly Color menuStripText = Color.FromArgb(142, 142, 142);
+        private readonly Color mainBackground = Color.FromArgb(30, 30, 30);
+        private readonly Color sidePanelBackground = Color.FromArgb(37, 37, 38);
+        private readonly Color filesBackground = Color.FromArgb(45, 45, 45);
+        private readonly Color unselectedFile = Color.FromArgb(45, 45, 45);
+        private readonly Color selectedFile = Color.FromArgb(30, 30, 30);
 
         public static TabControl Files { get; set; } = new TabControl();
 
@@ -34,25 +39,31 @@ namespace C_Snap_Snap
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MenuStrip.BackColor = accentSecondary;
+            this.BackColor = formBackground;
+
+            MenuStrip.ForeColor = menuStripText;
+            MenuStrip.BackColor = menuStripBackground;
+            //MenuStrip.<dropdowntext> = Color.FromArgb(204, 204, 204);
+            //MenuStrip.<dropdownbackground> = accent;
 
             Files.Size = new Size(splitContainer2.Panel2.Width, splitContainer2.Panel2.Height);
             Files.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             //Files.SetStyle(ControlStyles.DoubleBuffered, true);
             //Files.DoubleBuffered = true;
             Files.Visible = false;
+
             splitContainer2.Panel2.Controls.Add(Files);
 
-            splitContainer2.Panel2.BackColor = secondary;
-            splitContainer2.Panel1.BackColor = accent;
-            splitContainer1.Panel1.BackColor = secondary;
-            BlockCloser.BackColor = secondary;
+            splitContainer2.Panel2.BackColor = mainBackground;
+            splitContainer2.Panel1.BackColor = sidePanelBackground;
+            splitContainer1.Panel1.BackColor = sidePanelBackground;
+            BlockCloser.BackColor = mainBackground;
             Language.SelectedIndex = 0;
 
             for (int i = 0; i < Blocks.TabCount; i++)
             {
                 Blocks.SelectedIndex = i;
-                Blocks.SelectedTab.BackColor = secondary;
+                Blocks.SelectedTab.BackColor = sidePanelBackground;
             }
             Blocks.SelectedIndex = 0;
 
@@ -165,8 +176,8 @@ namespace C_Snap_Snap
             {
                 Name = sfd.FileName,
                 Text = file.Name,
-                BackColor = primary,
-                ForeColor = primary
+                BackColor = mainBackground,
+                ForeColor = mainBackground
             };
             newFile.MouseDown += new MouseEventHandler(Files_MouseDown);
             newFile.MouseUp += new MouseEventHandler(Files_MouseUp);
@@ -435,8 +446,8 @@ namespace C_Snap_Snap
             {
                 Name = ofd.FileName,
                 Text = file.Name,
-                BackColor = primary,
-                ForeColor = primary
+                BackColor = formBackground,
+                ForeColor = formBackground
             };
             newFile.MouseDown += new MouseEventHandler(Files_MouseDown);
             newFile.MouseUp += new MouseEventHandler(Files_MouseUp);
@@ -445,6 +456,7 @@ namespace C_Snap_Snap
             Files.TabPages.Add(newFile);
             Files.SelectedIndex = Files.TabCount - 1;
             openingFile = false;
+            splitContainer2.Panel2.BackColor = filesBackground;
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
