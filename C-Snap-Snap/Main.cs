@@ -17,10 +17,8 @@ namespace C_Snap_Snap
         private readonly Color mainBackground = Color.FromArgb(30, 30, 30);
         private readonly Color sidePanelBackground = Color.FromArgb(37, 37, 38);
         private readonly Color filesBackground = Color.FromArgb(45, 45, 45);
-        private readonly Color unselectedFile = Color.FromArgb(45, 45, 45);
-        private readonly Color selectedFile = Color.FromArgb(30, 30, 30);
 
-        public static TabControl Files { get; set; } = new TabControl();
+        public static TabControls.MainPanel Files { get; set; } = new TabControls.MainPanel();
 
         private Point MousePos;
         private bool initDone = false;

@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Block.cs" />
+    <Compile Include="TabControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Function.cs" />
     <Compile Include="IfStatement.cs" />
     <Compile Include="Main.cs">
