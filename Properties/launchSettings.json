@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "C-Snap-Snap (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "C-Snap-Snap (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

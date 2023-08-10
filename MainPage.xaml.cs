@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
+using Microsoft.UI.Xaml.Controls;
+using Windows.Foundation;
 
 namespace C_Snap_Snap
 {
-    public partial class Main : Form
+    public sealed partial class MainPage : Page
     {
-        private readonly Point MouseConstant = new Point(177, 100);
+        public MainPage()
+        {
+            InitializeComponent();
+            canvas.Children.Add(new Variable("test", new Point(20, 20)));
+            canvas.Children.Add(new Function("test", new Point(20, 20)));
+            canvas.Children.Add(new IfStatement("test", new Point(20, 20)));
+        }
+
+        /*private readonly Point MouseConstant = new Point(177, 100);
 
         private readonly Color formBackground = Color.FromArgb(51, 51, 51);
         private readonly Color menuStripText = Color.FromArgb(204, 204, 204);
@@ -31,7 +36,7 @@ namespace C_Snap_Snap
         private Point distanceFromMouse = new Point(0, 0);
         private int counter = 1;
 
-        public Main()
+        public MainPage()
         {
             InitializeComponent();
             MenuStrip.Renderer = new ToolStripProfessionalRenderer(new MenuStripColorTable());
@@ -222,7 +227,7 @@ namespace C_Snap_Snap
             }*/
         }
 
-        private void NewFile_MouseMove(object sender, MouseEventArgs e)
+        /*private void NewFile_MouseMove(object sender, MouseEventArgs e)
         {
             MousePos = PointToClient(new Point(Cursor.Position.X - MouseConstant.X, Cursor.Position.Y - MouseConstant.Y)); // need to change MouseConstant to change dynamically with screen
             if (selectedBlock == null) return;
@@ -598,5 +603,5 @@ namespace C_Snap_Snap
                 return Color.FromArgb(69, 69, 69);
             }
         }
-    }
+    }*/
 }

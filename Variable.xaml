@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<local:Block
+    x:Class="C_Snap_Snap.Variable"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:C_Snap_Snap"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:Variable}"
+    mc:Ignorable="d">
+
+    <Canvas Width="{Binding Size.Width,UpdateSourceTrigger=Explicit,Mode=TwoWay}" Height="{x:Bind size.Height}" PointerPressed="Canvas_PointerPressed" PointerEntered="Canvas_PointerEntered" PointerExited="Canvas_PointerExited">
+        <Rectangle Fill="{x:Bind BlockColor}" Width="{x:Bind size.Width}" Height="{x:Bind size.Height}" Canvas.Left="0" Canvas.Top="0"/>
+        
+        <!-- Border -->
+        <Line Fill="White" X1="0" Y1="0" X2="{x:Bind size.Width}" Y2="0" Canvas.Left="0" Canvas.Top="0" Visibility="{x:Bind borderVisibility}"/>
+        <Line Fill="White" X1="{x:Bind size.Width}" Y1="0" X2="{x:Bind size.Width}" Y2="{x:Bind size.Height}" Canvas.Left="0" Canvas.Top="0" Visibility="{x:Bind borderVisibility}"/>
+        <Line Fill="White" X1="{x:Bind size.Width}" Y1="{x:Bind size.Height}" X2="0" Y2="{x:Bind size.Height}" Canvas.Left="0" Canvas.Top="0" Visibility="{x:Bind borderVisibility}"/>
+        <Line Fill="White" X1="0" Y1="0" X2="0" Y2="{x:Bind size.Width}" Canvas.Left="0" Canvas.Top="0" Visibility="{x:Bind borderVisibility}"/>
+    </Canvas>
+</local:Block>
